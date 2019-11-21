@@ -15,8 +15,10 @@ jobs:
           version: 1.2.0
       - name: Install packages
         run: julia --project -e 'import Pkg; Pkg.instantiate()'
-      - name: Prepare output folder
+      - name: Prepare output folder for notebooks
         run: mkdir -p dist/notebooks
+      - name: Prepare output folder for static files
+        run: mkdir -p dist/chapters
       - name: Run Weave
         run: julia --project builder.jl
       - name: Deploy
