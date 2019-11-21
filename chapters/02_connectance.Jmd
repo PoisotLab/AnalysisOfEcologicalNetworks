@@ -6,6 +6,21 @@ title: The importance of connectance
 using EcologicalNetworks
 ```
 
+## An overview of the theory
+
+## Preparing the data
+
+For this chapter, we will want to compare simulations of random networks, to the
+output of the same analyses on empirical networks. We will work on host-parasite
+data
+
+```julia
+using Mangal
+dataset("ponisio_2017")
+```
+
+## ...
+
 ```julia
 U = UnipartiteNetwork(rand(Bool, (5,5)))
 ```
