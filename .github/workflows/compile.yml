@@ -17,6 +17,8 @@ jobs:
         run: julia --project -e 'import Pkg; Pkg.instantiate()'
       - name: Prepare output folder
         run: mkdir -p dist/notebooks
+      - name: Run Weave
+        run: julia --project builder.jl
       - name: Deploy
         uses: maxheld83/ghpages@v0.2.1
         env:

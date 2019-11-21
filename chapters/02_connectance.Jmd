@@ -1,0 +1,15 @@
+---
+title: The importance of connectance
+---
+
+```julia
+using EcologicalNetworks
+```
+
+```julia
+U = UnipartiteNetwork(rand(Bool, (5,5)))
+```
+
+```julia
+connectance(U)
+```
