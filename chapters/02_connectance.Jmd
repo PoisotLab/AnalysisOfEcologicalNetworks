@@ -16,7 +16,8 @@ data
 
 ```julia
 using Mangal
-dataset("ponisio_2017")
+ds = dataset("ponisio_2017")
+networks(ds)
 ```
 
 ## ...
