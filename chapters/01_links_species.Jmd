@@ -1,5 +1,5 @@
 ---
-title: The importance of connectance
+title: Link-species scaling
 ---
 
 ```julia
@@ -16,16 +16,18 @@ data from **TK**
 
 ```julia
 using Mangal
-ds = dataset("hadfield_2014")
-networks(ds)
+ds = first(datasets("q" => "havens"))
+dn = networks(ds)
+N = convert.(UnipartiteNetwork, dn)
 ```
 
-## ...
+## First plot
 
 ```julia
-U = UnipartiteNetwork(rand(Bool, (5,5)))
-```
-
-```julia
-connectance(U)
+using Plots
+scatter(
+  richness.(N), links.(N),
+  c=:white,
+  xlabel="Species", ylabel="Interactions",
+  xaxis=:log, yaxis=:log)
 ```
