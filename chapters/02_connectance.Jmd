@@ -24,5 +24,6 @@ N = convert.(BipartiteNetwork, convert.(UnipartiteNetwork, dn))
 ## ...
 
 ```julia
+using Plots
 histogram(connectance.(N))
 ```
