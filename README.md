@@ -1,6 +1,9 @@
 ---
 title: Introduction
+nav_exclude: true
 ---
+
+# Practical Analysis of Ecological Networks
 
 ## About this book
 
