@@ -180,7 +180,8 @@ scatter(
   ylim=(10,1000),
   xscale=:log,
   yscale=:log,
-  c=:grey, msw=0, alpha=0.5, ms=6
+  c=:grey, msw=0, alpha=0.5, ms=6,
+  aspectratio=0.07
 )
 S = 10:100
 plot!(S, (S.-1), ls=:dash, c=:black, lab="(S-1)")
