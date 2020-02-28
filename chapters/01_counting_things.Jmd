@@ -181,7 +181,8 @@ scatter(
   xscale=:log,
   yscale=:log,
   c=:grey, msw=0, alpha=0.5, ms=6,
-  aspectratio=0.07
+  aspectratio=0.07,
+  size = (600,600)
 )
 S = 10:100
 plot!(S, (S.-1), ls=:dash, c=:black, lab="(S-1)")
