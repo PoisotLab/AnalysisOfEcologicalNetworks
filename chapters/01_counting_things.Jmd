@@ -2,16 +2,44 @@
 title: Counting species and interactions
 ---
 
-```julia
-using EcologicalNetworks
-```
-
 ## An overview of the theory
 
 ## Illustrations on a single network
 
+We will begin this chapter by looking a basic information we can get on a single
+network - this is useful both as an exploration of the concepts, and as an
+introduction to the ways we can manipulate network data through programming.
+
+We will need a few packages for this (and indeed most of the following) chapter,
+which you have installed during the introduction. First, we will want to load
+functions to analyse networks themselves:
+
 ```julia
-N = Mangal.network(935)
+using EcologicalNetworks
+```
+
+Next, we will load the `Mangal` package, to get access to a variety of functions
+allowing us to get network data from the [mangal.io](http://mangal.io) website.
+Note that we will not load it with `using`, but with `import` - this means that
+we will need to preface the name of the functions by `Mangal.`, to avoid having
+a lot of functions with non-specific names in our namespace:
+
+```julia
+import Mangal
+```
+
+Finally, because we will want to make some visualisations, we will load the
+packages for plots:
+
+```julia
+using Plots
+using EcologicalNetworksPlots
+```
+
+And with this, we are all set to get our first network:
+
+```julia
+first_network = Mangal.network(935)
 ```
 
 ## Preparing the data

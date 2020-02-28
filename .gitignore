@@ -5,3 +5,5 @@ deps/deps.jl
 Manifest.toml
 dist/chapters
 dist/notebooks
+dist/.sass-cache
+dist/_site
