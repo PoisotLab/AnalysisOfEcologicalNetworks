@@ -1,3 +1,7 @@
+---
+title: Introduction
+---
+
 ## About this book
 
 The goal of this book is to provide a *practical* introduction to the analysis
@@ -10,33 +14,18 @@ when needed.
 
 ## The tools
 
-````julia
+```julia
 2+2
-````
-
-
-````
-4
-````
-
-
-
-
+```
 
 ### Data analysis
 
-````julia
+```julia
 using EcologicalNetworks
-````
-
-
-
-
+```
 
 ### Data source
 
-````julia
+```julia
 using Mangal
-````
-
-
+```
