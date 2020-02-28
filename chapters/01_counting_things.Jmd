@@ -2,6 +2,8 @@
 title: Counting species and interactions
 ---
 
+# Counting species and interactions
+
 ## Goals of this chapter
 
 ## My first network analysis
@@ -110,13 +112,44 @@ B = convert(BipartiteQuantitativeNetwork, N)
 
 ### Visualizing the network
 
-To get a sense of what the network "looks like", we may decide to plot it.
+To get a sense of what the network "looks like", we may decide to plot it. We
+have imported the `EcologicalNetworksPlots` package, which comes with a variety
+of layouts and other functionalities for this task, and works in conjunction
+with `Plots`:
 
 ```julia
-I = initial(RandomInitialLayout, B)
+I = EcologicalNetworksPlots.initial(EcologicalNetworksPlots.RandomInitialLayout, B)
 for step in 1:4000
-  position!(ForceDirectedLayout(2.5), I, B)
+  EcologicalNetworksPlots.position!(EcologicalNetworksPlots.ForceDirectedLayout(2.5), I, B)
 end
 plot(I, B, aspectratio=1)
 scatter!(I, B, bipartite=true, mc=:lightgrey, msc=:white, msw=2, ms=8)
+```
+
+We *may* decide to do this, but in practice we will often refrain from plotting
+networks. Plotting networks is very rarely useful. Depending on the layout, it
+is easy to mis-communicate about the structure of the network. Past a certain
+number of species and interactions, the plots look like hairballs. Most
+importantly, we have a wide variety of quantitative measures that we can apply,
+and they will teach us a lot more about the network structure than any plot ever
+would. Plotting is marginally useful during explorations, and to illustrate
+certain concepts, but should largely be avoided for research purposes.
+
+### Counting species and interactions
+
+```julia
+richness(B)
+```
+
+```julia
+richness(B; dims=1)
+richness(B; dims=2)
+```
+
+```julia
+links(B)
+```
+
+```julia
+sum(B)
 ```
