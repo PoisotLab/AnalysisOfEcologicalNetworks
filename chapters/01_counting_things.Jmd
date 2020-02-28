@@ -157,4 +157,35 @@ sum(B)
 
 ## Link-species relationships
 
+### Overview of the theory
+
+### Getting the data
+
+```julia
+small_lakes_dataset = first(Mangal.datasets("q" => "Adirondack"))
+small_lakes_networks = Mangal.networks(small_lakes_dataset)
+N = convert.(UnipartiteNetwork, small_lakes_networks)
+```
+
+```julia
+scatter(
+  richness.(N),
+  links.(N),
+  lab="",
+  legend=:topleft,
+  xlabel = "Species",
+  ylabel = "Links",
+  frame=:grid,
+  xlim=(10,100),
+  ylim=(10,1000),
+  xscale=:log,
+  yscale=:log,
+  c=:grey, msw=0, alpha=0.5, ms=6
+)
+S = 10:100
+plot!(S, (S.-1), ls=:dash, c=:black, lab="(S-1)")
+plot!(S, 0.086.*(S.^2.0.-(S.-1)).+(S.-1), lab="L", c=:black, ls=:dot)
+plot!(S, S.^2.0, c=:black, lab="S²")
+```
+
 ## Degree and degree distribution
