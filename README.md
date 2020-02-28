@@ -12,11 +12,13 @@ when needed.
 
 ## How to read the book
 
-## The tools
+### (something about the theory)
 
-```julia
-2+2
-```
+### Run the examples
+
+### Notebooks
+
+## The tools
 
 ### Data analysis
 

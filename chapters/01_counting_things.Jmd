@@ -8,7 +8,9 @@ title: Counting species and interactions
 
 We will begin this chapter by looking a basic information we can get on a single
 network - this is useful both as an exploration of the concepts, and as an
-introduction to the ways we can manipulate network data through programming.
+introduction to the ways we can manipulate network data through programming. In
+particular, this section will serve as a short introduction to the `Mangal`
+package to download ecological networks dataset.
 
 We will need a few packages for this (and indeed most of the following) chapter,
 which you have installed during the introduction. First, we will want to load
@@ -36,11 +38,46 @@ using Plots
 using EcologicalNetworksPlots
 ```
 
+All of these packages have documentations, and it is always a good idea to see
+the different options available for the various functions. One way to get a
+sense of the functions included in a package, or to get help on these functions,
+it to type `?[PackageName].` in the Julia REPL, and to press Tab to see the
+possible functions. This is also a great way to discover functionalities in
+packages.
+
 And with this, we are all set to get our first network:
 
 ```julia
 first_network = Mangal.network(935)
+print(first_network.description)
 ```
+
+This object has information about a network. Most of these information are
+metadata, *i.e.* we do not have the actual interactions at this point. We can
+get a list of interactions contained in this network with
+
+```julia
+first_network_interactions = Mangal.interactions(first_network);
+print("There are $(length(first_network_interactions)) interactions in this network")
+```
+
+We can have a deeper look at the first interaction:
+
+```julia
+first_interaction = first(first_network_interactions)
+```
+
+This has *a lot* of information! We can focus on the most important properties:
+
+| Information           | How to get it                   | Result                            |
+| --------------------- | ------------------------------- | --------------------------------- |
+| Interaction type      | `first_interaction.type`        | `j first_interaction.type`        |
+| Species 1             | `first_interaction.from.name`   | `j first_interaction.from.name`   |
+| Species 2 taxon ID    | `first_interaction.to.taxon.id` | `j first_interaction.to.taxon.id` |
+| Method of observation | `first_interaction.method`      | `j first_interaction.method`      |
+| Interaction strength  | `first_interaction.strength`    | `j first_interaction.strength`    |
+
+
 
 ## Preparing the data
 
@@ -48,8 +85,7 @@ For this chapter, we will want to compare simulations of random networks, to the
 output of the same analyses on empirical networks. We will work on host-parasite
 data from **TK**
 
-```julia
-import Mangal
+```julias
 ds = first(Mangal.datasets("q" => "havens"))
 dn = Mangal.networks(ds)
 N = convert.(UnipartiteNetwork, dn)

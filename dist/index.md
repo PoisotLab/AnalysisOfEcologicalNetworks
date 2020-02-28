@@ -8,20 +8,13 @@ when needed.
 
 ## How to read the book
 
+### (something about the theory)
+
+### Run the examples
+
+### Notebooks
+
 ## The tools
-
-````julia
-2+2
-````
-
-
-````
-4
-````
-
-
-
-
 
 ### Data analysis
 
