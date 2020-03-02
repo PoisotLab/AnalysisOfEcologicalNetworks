@@ -7,6 +7,13 @@ nav_order: 1
 
 ## Goals of this chapter
 
+The goal of this chapter is to highlight the importance of thinking about the
+number of interactions in a networks, and about the number of interactions
+established by as species within a network. We will use various examples to
+introduce the notions of connectance, degree, and linkage density. In addition,
+this chapter will serve as an introduction to `EcologicalNetworks` and `Mangal`,
+which will provide valuable information for the other chapters.
+
 ## Link-species relationships
 
 We will begin this chapter by looking a basic information we can get on a single
@@ -32,6 +39,10 @@ packages for plots:
 using Plots
 ```
 
+```julia; echo=false
+plotlyjs()
+```
+
 All of these packages have documentations, and it is always a good idea to see
 the different options available for the various functions. One way to get a
 sense of the functions included in a package, or to get help on these functions,
@@ -41,23 +52,31 @@ packages.
 
 ### Overview of the data querying
 
-And with this, we are all set to get our first network:
+And with this, we are all set to get our first network from the <mangal.io>
+database. To illustrate the basic notions, we will work on a pollination
+network, which we access by its unique identifier (`935`). We will see in later
+sections how we can get more control over what networks we get.
 
 ```julia
 first_network = Mangal.network(935)
 print(first_network.description)
 ```
 
-This object has information about a network. Most of these information are
-metadata, *i.e.* we do not have the actual interactions at this point.
+This object is of the type `j typeof(first_network)`, and has information about
+a network. To see what information is available in any type, we can call
+`fieldnames` on the type. In this case, this would return
 
-There are a few ways to get the actual interactions. One, which we will see
-later, is to download the entire network as an object on which we can apply
-measures of network structures. For now, we are only interested in the number of
-nodes (species) and interactions between them. The `Mangal` package has a method
-called `count`, which will return the number of objects matching a number of
-queries. For example, we can get the number of nodes (of type `MangalNode`) in
-our network with:
+```julia
+fieldnames(typeof(first_network))
+```
+
+Most of these information are metadata, *e.g.* the date, spatial position, date
+of upload, and a reference. What we do *not* have is a list of the interactions.
+Luckily, we do not yet need a list of interactions, since we are only concerned
+with counting them (in due time, we will get the entire information on
+interactions). The `Mangal` package has a method called `count`, which will
+return the number of objects matching a series of queries. For example, we can
+get the number of nodes (of type `MangalNode`) in our network with:
 
 ```julia
 count(Mangal.MangalNode, first_network)
@@ -69,9 +88,16 @@ We can do the same with the number of interactions:
 count(Mangal.MangalInteraction, first_network)
 ```
 
-With this information, we may want to generalize the process a little bit, and
-examine the relationship between species richness and links in a collection of
-networks.
+This method is preferable to more complex ones requiring to download all
+interactions, because it is a lot faster. As we will see in the following
+section, the representation of network data in <mangal.io> is very rich, and if
+all we care about is counting things, then we do not need the overhead
+associated with retrieving all the data.
+
+Equipped with the ability to count objects, we can measure the number of species
+and interactions in any network. We will now generalize this process a little
+bit, and explore the relationship that exists between the number of species and
+the number of links in a collection of networks.
 
 ### Getting the data for multiple networks
 
@@ -98,34 +124,44 @@ small_lakes_networks = Mangal.networks(small_lakes_dataset)
 println("small_lakes_networks contains $(length(small_lakes_networks)) networks")
 ```
 
+We will therefore be able to use our collection of `j
+length(small_lakes_networks)` networks to see how the number of species and
+links are related.
+
 ### Counting species and interactions
 
-From our collection of networks, we want to extract the number of nodes, and the
-number of interactions. There are a few ways to do this, as is always the case
-with programming tasks. In this case, we will summarize every network by a
-`Tuple` which will contain `(S, L)`, the number of species and links. The first
-way to achieve this is to use a "list comprehension":
+From our collection of networks (`small_lakes_networks`), we want to extract the
+number of nodes, and the number of interactions. There are a few ways to do
+this, as is always the case with programming tasks. In this case, we will
+summarize every network by a `Tuple` which will contain `(S, L)`, the number of
+species and links. A `Tuple` is not modifiable, so this is a safe way to collect
+data. In addition, tuples of coordinates are usable directly in plots, and this
+will simplify the syntax immensely.
+
+The first way to achieve this is to use a "list
+comprehension":
 
 ```julia
-LS_adirondacks_1 = [(count(Mangal.MangalNode, network), count(Mangal.MangalInteraction)) for network in small_lakes_networks]
+LS_1 = [(count(Mangal.MangalNode, network), count(Mangal.MangalInteraction, network)) for network in small_lakes_networks]
+first(LS_1)
 ```
 
 This is a little bit unwieldy, as this is a long line, and requires to create a
-variable (`network`) for the loop. So we might want to use the more readable
-expression below:
+variable (`network`) only to use inside the loop. Instead, we might want to use
+the more readable expression below:
 
 ```julia
-S = count.(Mangal.MangalNode, small_lakes_networks)
-L = count.(Mangal.MangalInteraction, small_lakes_networks)
-LS_adirondack = zip(S,L)
+S = count.(Mangal.MangalNode, small_lakes_networks);
+L = count.(Mangal.MangalInteraction, small_lakes_networks);
+LS = collect(zip(S,L));
 ```
 
 This alternative version is easier to parse, and throughout the book we will try
-to favor readability over "clever" code. The `LS_adirondack` variable contains
+to favor readability over "clever" code. The `LS` variable contains
 tuples that look like:
 
 ```julia
-first(LS_adirondack)
+first(LS)
 ```
 
 The first network in our dataset has `j first(LS_adirondack)[1]` species, and `j
@@ -133,25 +169,14 @@ first(LS_adirondack)[2]` interactions.
 
 ```julia
 scatter(
-  S,
-  L,
-  lab="",
-  legend=:topleft,
-  xlabel = "Species",
-  ylabel = "Links",
+  collect(LS),
+  lab="", legend=:topleft,
+  xlabel = "Species", ylabel = "Links",
   frame=:grid,
   xlim=(10,100),
   ylim=(10,1000),
-  xscale=:log,
-  yscale=:log,
-  c=:grey, msw=0, alpha=0.5, ms=6,
-  aspectratio=0.07,
-  size = (600,600)
+  c=:grey, msw=0, alpha=0.5
 )
-S = 10:100
-plot!(S, (S.-1), ls=:dash, c=:black, lab="(S-1)")
-plot!(S, 0.086.*(S.^2.0.-(S.-1)).+(S.-1), lab="L", c=:black, ls=:dot)
-plot!(S, S.^2.0, c=:black, lab="S²")
 ```
 
 ### Theories for link-species scaling
