@@ -39,10 +39,6 @@ packages for plots:
 using Plots
 ```
 
-```julia; echo=false
-plotlyjs()
-```
-
 All of these packages have documentations, and it is always a good idea to see
 the different options available for the various functions. One way to get a
 sense of the functions included in a package, or to get help on these functions,
