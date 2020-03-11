@@ -160,11 +160,11 @@ tuples that look like:
 first(LS)
 ```
 
-The first network in our dataset has `j first(LS_adirondack)[1]` species, and `j
-first(LS_adirondack)[2]` interactions.
+The first network in our dataset has `j first(LS)[1]` species, and `j
+first(LS)[2]` interactions.
 
 ```julia
-scatter(
+p1 = scatter(
   collect(LS),
   lab="", legend=:topleft,
   xlabel = "Species", ylabel = "Links",
@@ -173,7 +173,8 @@ scatter(
   ylim=(10,1000),
   c=:grey, msw=0, alpha=0.5
 )
-savefig("myimage.png")
+savefig(p1, "./myimage.png")
+savefig(p1, "./figures/myimage.png")
 ```
 
 ### Theories for link-species scaling
