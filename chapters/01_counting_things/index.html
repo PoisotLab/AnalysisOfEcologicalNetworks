@@ -1,0 +1,295 @@
+<!doctype html><html lang=en><head><title>Ecological Networks - Counting species and interactions</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="BIO3043 / BIO6037"><base href><script src=https://kit.fontawesome.com/1a39b803e2.js crossorigin=anonymous></script><link rel=stylesheet type=text/css href=/scss/theme.css><script src=/ui/main.js></script><link rel=canonical href=/chapters/01_counting_things/></head><body><div class=backdrop></div><nav id=navigation><div class=navitems><a class="menu active" href=/chapters/>Chapters</a>
+<a class=menu href=/syllabus/>Syllabus</a>
+<a class=menu href=/about/>About</a></div></nav><header><section class=container><h1>Counting species and interactions</h1></section></header><main id=content><section class=container><h1 id=counting-species-and-interactions>Counting species and interactions</h1><h2 id=goals-of-this-chapter>Goals of this chapter</h2><p>The goal of this chapter is to highlight the importance of thinking about the
+number of interactions in a networks, and about the number of interactions
+established by as species within a network. We will use various examples to
+introduce the notions of connectance, degree, and linkage density. In addition,
+this chapter will serve as an introduction to <code>EcologicalNetworks</code> and <code>Mangal</code>,
+which will provide valuable information for the other chapters.</p><h2 id=link-species-relationships>Link-species relationships</h2><p>We will begin this chapter by looking a basic information we can get on a single
+network - this is useful both as an exploration of the concepts, and as an
+introduction to the ways we can manipulate network data through programming. In
+particular, this section will serve as a short introduction to the <code>Mangal</code>
+package to download ecological networks dataset.</p><p>We will load the <code>Mangal</code> package, to get access to a variety of functions
+allowing us to get network data from the <a href=http://mangal.io>mangal.io</a> website.
+Note that we will not load it with <code>using</code>, but with <code>import</code> - this means that
+we will need to preface the name of the functions by <code>Mangal.</code>, to avoid having
+a lot of functions with non-specific names in our namespace:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia><span style=color:#66d9ef>import</span> Mangal
+</code></pre></div><p>Finally, because we will want to make some visualisations, we will load the
+packages for plots:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia><span style=color:#66d9ef>using</span> Plots
+</code></pre></div><p>All of these packages have documentations, and it is always a good idea to see
+the different options available for the various functions. One way to get a
+sense of the functions included in a package, or to get help on these functions,
+it to type <code>?[PackageName].</code> in the Julia REPL, and to press Tab to see the
+possible functions. This is also a great way to discover functionalities in
+packages.</p><h3 id=overview-of-the-data-querying>Overview of the data querying</h3><p>And with this, we are all set to get our first network from the &lt;mangal.io>
+database. To illustrate the basic notions, we will work on a pollination
+network, which we access by its unique identifier (<code>935</code>). We will see in later
+sections how we can get more control over what networks we get.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>first_network <span style=color:#f92672>=</span> Mangal<span style=color:#f92672>.</span>network(<span style=color:#ae81ff>935</span>)
+print(first_network<span style=color:#f92672>.</span>description)
+</code></pre></div><pre><code>Pollination networks of the Azorean Flores island
+</code></pre><p>This object is of the type Mangal.MangalNetwork, and has information about
+a network. To see what information is available in any type, we can call
+<code>fieldnames</code> on the type. In this case, this would return</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>fieldnames(typeof(first_network))
+</code></pre></div><pre><code>(:id, :public, :name, :date, :position, :created, :updated, :user, :descrip
+tion, :complete, :dataset)
+</code></pre><p>Most of these information are metadata, <em>e.g.</em> the date, spatial position, date
+of upload, and a reference. What we do <em>not</em> have is a list of the interactions.
+Luckily, we do not yet need a list of interactions, since we are only concerned
+with counting them (in due time, we will get the entire information on
+interactions). The <code>Mangal</code> package has a method called <code>count</code>, which will
+return the number of objects matching a series of queries. For example, we can
+get the number of nodes (of type <code>MangalNode</code>) in our network with:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>count(Mangal<span style=color:#f92672>.</span>MangalNode, first_network)
+</code></pre></div><pre><code>22
+</code></pre><p>We can do the same with the number of interactions:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>count(Mangal<span style=color:#f92672>.</span>MangalInteraction, first_network)
+</code></pre></div><pre><code>30
+</code></pre><p>This method is preferable to more complex ones requiring to download all
+interactions, because it is a lot faster. As we will see in the following
+section, the representation of network data in &lt;mangal.io> is very rich, and if
+all we care about is counting things, then we do not need the overhead
+associated with retrieving all the data.</p><p>Equipped with the ability to count objects, we can measure the number of species
+and interactions in any network. We will now generalize this process a little
+bit, and explore the relationship that exists between the number of species and
+the number of links in a collection of networks.</p><h3 id=getting-the-data-for-multiple-networks>Getting the data for multiple networks</h3><p>In &lt;mangal.io>, networks are organized in datasets - we will work on a classical
+food web analysis dataset, representing interactions in small lakes in the
+Adirondack:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>small_lakes_dataset <span style=color:#f92672>=</span> first(Mangal<span style=color:#f92672>.</span>datasets(<span style=color:#e6db74>&#34;q&#34;</span> <span style=color:#f92672>=&gt;</span> <span style=color:#e6db74>&#34;Adirondack&#34;</span>))
+</code></pre></div><pre><code>Mangal.MangalDataset(15, true, &quot;havens_1992&quot;, 2019-02-23T01:47:06, 2019-02-
+23T01:47:06, Mangal.MangalReference(15, 1992, &quot;10.1126/science.257.5073.110
+7&quot;, missing, missing, &quot;@article{Havens_1992, doi = {10.1126/science.257.507
+3.1107}, url = {https://doi.org/10.1126%2Fscience.257.5073.1107}, year = 19
+92, month = {aug}, publisher = {American Association for the Advancement of
+ Science ({AAAS})}, volume = {257}, number = {5073}, pages = {1107--1109}, 
+author = {K. Havens}, title = {Scale and Structure in Natural Food Webs}, j
+ournal = {Science}}&quot;, &quot;https://doi.org/10.1126%2Fscience.257.5073.1107&quot;, &quot;U
+RL of the attached data&quot;), 3, &quot;Pelagic communities of small lakes and ponds
+ of the Adirondack&quot;)
+</code></pre><p>To get the networks associated to this dataset, we can use the <code>networks</code>
+function, which will give us an array of networks objects. But first, we may
+want to know how many networks we will get this way:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>count(Mangal<span style=color:#f92672>.</span>MangalNetwork, small_lakes_dataset)
+</code></pre></div><pre><code>50
+</code></pre><p>The following line will get all of these networks for us:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>small_lakes_networks <span style=color:#f92672>=</span> Mangal<span style=color:#f92672>.</span>networks(small_lakes_dataset)
+println(<span style=color:#e6db74>&#34;small_lakes_networks contains </span><span style=color:#e6db74>$</span>(length(small_lakes_networks))<span style=color:#e6db74> networks&#34;</span>)
+</code></pre></div><pre><code>small_lakes_networks contains 50 networks
+</code></pre><p>We will therefore be able to use our collection of 50 networks to see how the number of species and
+links are related.</p><h3 id=counting-species-and-interactions-1>Counting species and interactions</h3><p>From our collection of networks (<code>small_lakes_networks</code>), we want to extract the
+number of nodes, and the number of interactions. There are a few ways to do
+this, as is always the case with programming tasks. In this case, we will
+summarize every network by a <code>Tuple</code> which will contain <code>(S, L)</code>, the number of
+species and links. A <code>Tuple</code> is not modifiable, so this is a safe way to collect
+data. In addition, tuples of coordinates are usable directly in plots, and this
+will simplify the syntax immensely.</p><p>The first way to achieve this is to use a &ldquo;list
+comprehension&rdquo;:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>LS_1 <span style=color:#f92672>=</span> [(count(Mangal<span style=color:#f92672>.</span>MangalNode, network), count(Mangal<span style=color:#f92672>.</span>MangalInteraction, network)) <span style=color:#66d9ef>for</span> network <span style=color:#66d9ef>in</span> small_lakes_networks]
+first(LS_1)
+</code></pre></div><pre><code>(26, 60)
+</code></pre><p>This is a little bit unwieldy, as this is a long line, and requires to create a
+variable (<code>network</code>) only to use inside the loop. Instead, we might want to use
+the more readable expression below:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>S <span style=color:#f92672>=</span> count<span style=color:#f92672>.</span>(Mangal<span style=color:#f92672>.</span>MangalNode, small_lakes_networks);
+L <span style=color:#f92672>=</span> count<span style=color:#f92672>.</span>(Mangal<span style=color:#f92672>.</span>MangalInteraction, small_lakes_networks);
+LS <span style=color:#f92672>=</span> collect(zip(S,L));
+</code></pre></div><p>This alternative version is easier to parse, and throughout the book we will try
+to favor readability over &ldquo;clever&rdquo; code. The <code>LS</code> variable contains
+tuples that look like:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>first(LS)
+</code></pre></div><pre><code>(26, 60)
+</code></pre><p>The first network in our dataset has 26 species, and 60 interactions.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>p1 <span style=color:#f92672>=</span> scatter(
+  collect(LS),
+  lab<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span>, legend<span style=color:#f92672>=:</span>topleft,
+  xlabel <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;Species&#34;</span>, ylabel <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;Links&#34;</span>,
+  frame<span style=color:#f92672>=:</span>grid,
+  xlim<span style=color:#f92672>=</span>(<span style=color:#ae81ff>10</span>,<span style=color:#ae81ff>100</span>),
+  ylim<span style=color:#f92672>=</span>(<span style=color:#ae81ff>10</span>,<span style=color:#ae81ff>1000</span>),
+  c<span style=color:#f92672>=:</span>grey, msw<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>, alpha<span style=color:#f92672>=</span><span style=color:#ae81ff>0.5</span>
+)
+savefig(p1, <span style=color:#e6db74>&#34;./myimage.png&#34;</span>)
+savefig(p1, <span style=color:#e6db74>&#34;./figures/myimage.png&#34;</span>)
+</code></pre></div><pre><code>Error: SystemError: opening file &quot;/home/runner/work/AnalysisOfEcologicalNet
+works/AnalysisOfEcologicalNetworks/figures/myimage.png&quot;: No such file or di
+rectory
+</code></pre><h3 id=theories-for-link-species-scaling>Theories for link-species scaling</h3><h2 id=degree-and-degree-distribution>Degree and degree distribution</h2><p>In the previous section, we focused on the relationship between the number of
+species and the number of interactions <em>across</em> networks. It is also very
+informative to look at the distribution of interactions <em>across</em> species
+<em>within</em> networks - we call the number of interactions that a species has its
+&ldquo;degree&rdquo;, and the degree distribution is a very important information about a
+network.</p><p>To look at the degree and degree distribution, we will need a few packages,
+which you have installed during the introduction. Specifically, we will want to
+load functions to analyse networks themselves, so we will use
+<code>EcologicalNetworks</code>, and we might want to represent the networks, and therefore
+will import <code>EcologicalNetworksPlots</code>:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia><span style=color:#66d9ef>using</span> EcologicalNetworks
+<span style=color:#66d9ef>import</span> EcologicalNetworksPlots
+</code></pre></div><h3 id=getting-the-network-data>Getting the network data</h3><p>And with this, we are all set to get our first network (we also briefly
+encountered it during the previous section):</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>first_network <span style=color:#f92672>=</span> Mangal<span style=color:#f92672>.</span>network(<span style=color:#ae81ff>935</span>)
+print(first_network<span style=color:#f92672>.</span>description)
+</code></pre></div><pre><code>Pollination networks of the Azorean Flores island
+</code></pre><p>As opposed to the previous section, we now want to get a list of interactions
+contained in this network:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>first_network_interactions <span style=color:#f92672>=</span> Mangal<span style=color:#f92672>.</span>interactions(first_network);
+print(<span style=color:#e6db74>&#34;There are </span><span style=color:#e6db74>$</span>(length(first_network_interactions))<span style=color:#e6db74> interactions in this network&#34;</span>)
+</code></pre></div><pre><code>There are 30 interactions in this network
+</code></pre><p>We can have a deeper look at the first interaction:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>first_interaction <span style=color:#f92672>=</span> first(first_network_interactions)
+</code></pre></div><pre><code>Mangal.MangalInteraction(55518, Mangal.MangalNetwork(935, true, &quot;olesen_al_
+2002_20000701_935&quot;, 2000-07-01T00:00:00, GeoInterface.Point([-31.193594, 39
+.444798]), 2019-02-25T16:29:16, 2019-02-25T16:29:16, 2, &quot;Pollination networ
+ks of the Azorean Flores island&quot;, false, Mangal.MangalDataset(62, true, &quot;ol
+esen_al_2002&quot;, 2019-02-25T16:27:42, 2019-02-25T16:27:42, Mangal.MangalRefer
+ence(61, 2002, &quot;10.1046/j.1472-4642.2002.00148.x&quot;, missing, missing, &quot;@arti
+cle{Olesen_2002, doi = {10.1046/j.1472-4642.2002.00148.x}, url = {https://d
+oi.org/10.1046%2Fj.1472-4642.2002.00148.x}, year = 2002, month = {may}, pub
+lisher = {Wiley-Blackwell}, volume = {8}, number = {3}, pages = {181--192},
+ author = {Jens M. Olesen and Louise I. Eskildsen and Shadila Venkatasamy},
+ title = {Invasion of pollination networks on oceanic islands: importance o
+f invader complexes and endemic super generalists}, journal = {Diversity an
+d Distributions}}&quot;, &quot;https://onlinelibrary.wiley.com/doi/abs/10.1046/j.1472
+-4642.2002.00148.x&quot;, &quot;https://www.nceas.ucsb.edu/interactionweb/html/olesen
+_et_al_2002.html&quot;), 2, &quot;Pollination networks for two oceanic islands, the A
+zorean Flores and the Mauritian Ile aux Aigrettes&quot;)), Mangal.MangalNode(668
+4, &quot;Halictus sp.&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:23, Mangal.MangalR
+eferenceTaxon(2617, &quot;Halictus&quot;, 2225, 154356, 88465, 2742846, missing, 2019
+-02-22T00:24:21, 2019-06-14T15:22:22)), Mangal.MangalNode(6674, &quot;Azorina vi
+dalii&quot;, 2019-02-25T16:29:22, 2019-02-25T16:29:22, Mangal.MangalReferenceTax
+on(2607, &quot;Azorina vidalii&quot;, 420018, missing, 239395, 5135848, 3166266, 2019
+-02-22T00:24:20, 2019-06-14T15:22:21)), 2000-07-01T00:00:00, missing, true,
+ :mutualism, &quot;field observations&quot;, 98, 2019-02-25T16:29:39, 2019-02-25T16:2
+9:39, Mangal.MangalAttribute(11, &quot;number of visit by a pollinator&quot;, &quot;Number
+ of individual of a species observed/caught on a flower&quot;, &quot;number of indivi
+dual&quot;))
+</code></pre><p>This has <em>a lot</em> of information! We can focus on the most important properties:</p><table><thead><tr><th>Information</th><th>How to get it</th><th>Result</th></tr></thead><tbody><tr><td>Interaction type</td><td><code>first_interaction.type</code></td><td>Error: type MangalInteraction has no field type</td></tr><tr><td>Species 1</td><td><code>first_interaction.from.name</code></td><td>&ldquo;Halictus sp.&rdquo;</td></tr><tr><td>Species 2 taxon ID</td><td><code>first_interaction.to.taxon.id</code></td><td>2607</td></tr><tr><td>Method of observation</td><td><code>first_interaction.method</code></td><td>&ldquo;field observations&rdquo;</td></tr><tr><td>Interaction strength</td><td><code>first_interaction.strength</code></td><td>98</td></tr></tbody></table><h3 id=creating-the-network-object>Creating the network object</h3><p>There are a few ways to collect these interactions into a network, but the
+simplest by far is to transform (<code>convert</code>) our <code>MangalNetwork</code> object into a
+<code>UnipartiteQuantitativeNetwork</code> (which is used by <code>EcologicalNetworks</code>) - this
+is done as follows:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>N <span style=color:#f92672>=</span> convert(UnipartiteQuantitativeNetwork, first_network)
+</code></pre></div><pre><code>22×22 unipartite quantitative ecological network (Float64, Mangal.MangalNod
+e) (L: 30)
+</code></pre><p>At this point, you are hopefuly familiar with what &ldquo;network&rdquo; means, but may have
+some hesitations about the meaning of &ldquo;unipartite&rdquo; and &ldquo;quantitative&rdquo;. <strong>TK</strong></p><p>As a sidenote, we will often adhere to the following convention when naming
+networks. <code>N</code> is a unipartite network, <code>B</code> is a bipartite network, and <code>R</code> is a
+random network. This is a useful way to get a sense of what we can expect the
+variable to contain.</p><p>Speaking of which, we know that this network contains information on
+pollination, and pollination networks are bipartite, because they have two
+groups of organisms (pollinators and polinized), which we assume do not
+establish interactions within the group. We can therefore transform (<code>convert</code>)
+our network into its bipartite representation:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>B <span style=color:#f92672>=</span> convert(BipartiteQuantitativeNetwork, N)
+</code></pre></div><pre><code>12×10 bipartite quantitative ecological network (Float64, Mangal.MangalNode
+) (L: 30)
+</code></pre><p>If you are not sure that a network can be represented in a bipartite way, you
+can always use the check for bipartiteness, which will return <code>true</code> if the
+network can be converted.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>EcologicalNetworks<span style=color:#f92672>.</span>check_bipartiteness(N)
+</code></pre></div><pre><code>true
+</code></pre><p>Not to worry, the <code>convert</code> function will fail with an explanation if the
+network cannot be transformed into a bipartite one.</p><h3 id=visualizing-the-network>Visualizing the network</h3><p>To get a sense of what the network &ldquo;looks like&rdquo;, we may decide to plot it. We
+have imported the <code>EcologicalNetworksPlots</code> package, which comes with a variety
+of layouts and other functionalities for this task, and works in conjunction
+with <code>Plots</code>. In this example, we will use a spring layout, where nodes are
+repelled, and interactions are attracting their nodes.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>I <span style=color:#f92672>=</span> EcologicalNetworksPlots<span style=color:#f92672>.</span>initial(EcologicalNetworksPlots<span style=color:#f92672>.</span>RandomInitialLayout, B)
+<span style=color:#66d9ef>for</span> step <span style=color:#66d9ef>in</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>:</span><span style=color:#ae81ff>4000</span>
+  EcologicalNetworksPlots<span style=color:#f92672>.</span>position!(EcologicalNetworksPlots<span style=color:#f92672>.</span>ForceDirectedLayout(<span style=color:#ae81ff>2.5</span>), I, B)
+<span style=color:#66d9ef>end</span>
+plot(I, B, aspectratio<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+scatter!(I, B, bipartite<span style=color:#f92672>=</span><span style=color:#66d9ef>true</span>, mc<span style=color:#f92672>=:</span>lightgrey, msc<span style=color:#f92672>=:</span>white, msw<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>, ms<span style=color:#f92672>=</span><span style=color:#ae81ff>8</span>)
+</code></pre></div><p><img src=figures/01_counting_things_21_1.png alt></p><p>We <em>may</em> decide to do this, but in practice we will often refrain from plotting
+networks. Plotting networks is very rarely useful. Depending on the layout, it
+is easy to mis-communicate about the structure of the network. Past a certain
+number of species and interactions, the plots look like hairballs. Most
+importantly, we have a wide variety of quantitative measures that we can apply,
+and they will teach us a lot more about the network structure than any plot ever
+would. Plotting is marginally useful during explorations, and to illustrate
+certain concepts, but should largely be avoided for research purposes. The few
+exceptions to this rule will be during the chapters on network comparison,
+network motifs, and network modularity.</p><h3 id=counting-species-and-interactions-2>Counting species and interactions</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>richness(B)
+</code></pre></div><pre><code>22
+</code></pre><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>richness(B; dims<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+</code></pre></div><pre><code>12
+</code></pre><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>richness(B; dims<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>)
+</code></pre></div><pre><code>10
+</code></pre><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>links(B)
+</code></pre></div><pre><code>30
+</code></pre><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>sum(B)
+</code></pre></div><pre><code>1139.0
+</code></pre><h3 id=getting-the-degree-of-species>Getting the degree of species</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>degree(B)
+</code></pre></div><pre><code>Dict{Mangal.MangalNode,Int64} with 22 entries:
+  MangalNode(6684, &quot;Halictus sp.&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:2…
+ =&gt; 6
+  MangalNode(6683, &quot;Reseda luteola&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29…
+ =&gt; 2
+  MangalNode(6675, &quot;Crithmum maritimum&quot;, 2019-02-25T16:29:22, 2019-02-25T1…
+ =&gt; 4
+  MangalNode(6689, &quot;Apis mellifera&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29…
+ =&gt; 3
+  MangalNode(6690, &quot;Lasius niger&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:2…
+ =&gt; 1
+  MangalNode(6692, &quot;Lucilia sericata&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
+ =&gt; 2
+  MangalNode(6687, &quot;Colias crocea&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
+ =&gt; 3
+  MangalNode(6680, &quot;Chamomilla suaveolens&quot;, 2019-02-25T16:29:23, 2019-02-2…
+ =&gt; 3
+  MangalNode(6695, &quot;Anothomyia pluvialis&quot;, 2019-02-25T16:29:23, 2019-02-25…
+ =&gt; 1
+  MangalNode(6681, &quot;Lotus corniculatus&quot;, 2019-02-25T16:29:23, 2019-02-25T1…
+ =&gt; 3
+  MangalNode(6688, &quot;Musca domestica&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
+ =&gt; 4
+  MangalNode(6694, &quot;Agrotis ipsilon&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
+ =&gt; 1
+  MangalNode(6686, &quot;Bombus ruderatus&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
+ =&gt; 3
+  MangalNode(6682, &quot;Freesia refracta&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
+ =&gt; 2
+  MangalNode(6677, &quot;Beta vulgaris&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
+ =&gt; 1
+  MangalNode(6693, &quot;Eristalix tenax&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
+ =&gt; 1
+  MangalNode(6678, &quot;Daucus carota&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
+ =&gt; 3
+  MangalNode(6685, &quot;Sepsis thoracica&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
+ =&gt; 4
+  MangalNode(6674, &quot;Azorina vidalii&quot;, 2019-02-25T16:29:22, 2019-02-25T16:2…
+ =&gt; 8
+  ⋮                                                                        
+ =&gt; ⋮
+</code></pre><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>degree(B; dims<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+</code></pre></div><pre><code>Dict{Mangal.MangalNode,Int64} with 12 entries:
+  MangalNode(6684, &quot;Halictus sp.&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:2…
+ =&gt; 6
+  MangalNode(6689, &quot;Apis mellifera&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29…
+ =&gt; 3
+  MangalNode(6690, &quot;Lasius niger&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:2…
+ =&gt; 1
+  MangalNode(6692, &quot;Lucilia sericata&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
+ =&gt; 2
+  MangalNode(6687, &quot;Colias crocea&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
+ =&gt; 3
+  MangalNode(6695, &quot;Anothomyia pluvialis&quot;, 2019-02-25T16:29:23, 2019-02-25…
+ =&gt; 1
+  MangalNode(6688, &quot;Musca domestica&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
+ =&gt; 4
+  MangalNode(6694, &quot;Agrotis ipsilon&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
+ =&gt; 1
+  MangalNode(6686, &quot;Bombus ruderatus&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
+ =&gt; 3
+  MangalNode(6693, &quot;Eristalix tenax&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
+ =&gt; 1
+  MangalNode(6685, &quot;Sepsis thoracica&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
+ =&gt; 4
+  MangalNode(6691, &quot;Calliphora vemitoria&quot;, 2019-02-25T16:29:23, 2019-02-25…
+ =&gt; 1
+</code></pre><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>degree(B; dims<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>)
+</code></pre></div><pre><code>Dict{Mangal.MangalNode,Int64} with 10 entries:
+  MangalNode(6683, &quot;Reseda luteola&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29…
+ =&gt; 2
+  MangalNode(6677, &quot;Beta vulgaris&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
+ =&gt; 1
+  MangalNode(6680, &quot;Chamomilla suaveolens&quot;, 2019-02-25T16:29:23, 2019-02-2…
+ =&gt; 3
+  MangalNode(6678, &quot;Daucus carota&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
+ =&gt; 3
+  MangalNode(6675, &quot;Crithmum maritimum&quot;, 2019-02-25T16:29:22, 2019-02-25T1…
+ =&gt; 4
+  MangalNode(6674, &quot;Azorina vidalii&quot;, 2019-02-25T16:29:22, 2019-02-25T16:2…
+ =&gt; 8
+  MangalNode(6681, &quot;Lotus corniculatus&quot;, 2019-02-25T16:29:23, 2019-02-25T1…
+ =&gt; 3
+  MangalNode(6676, &quot;Solidago sempervivens&quot;, 2019-02-25T16:29:22, 2019-02-2…
+ =&gt; 2
+  MangalNode(6679, &quot;Silene vulgaris&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
+ =&gt; 2
+  MangalNode(6682, &quot;Freesia refracta&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
+ =&gt; 2
+</code></pre><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>plot(sort(collect(values(degree(B; dims<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)))))
+plot!(sort(collect(values(degree(B; dims<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>)))))
+</code></pre></div><p><img src=figures/01_counting_things_30_1.png alt></p><h3 id=degree-distribution>Degree distribution</h3></section></main><footer><section class=container>We are located in the <a href=https://goo.gl/maps/qtGaMPy9g8jXZz9AA target=_blank>Campus MIL</a> of <a href=http://umontreal.ca target=_blank rel="noopener noreferrer">Université de Montréal</a>.<br>We are mainly funded by <a href=https://www.nserc-crsng.gc.ca/index_eng.asp target=_blank>NSERC</a>, <a href=http://www.frqnt.gouv.qc.ca/accueil target=_blank rel="noopener noreferrer">FRQNT</a>, <a href=https://www.innovation.ca/fr target=_blank rel="noopener noreferrer">CFI</a>, <a href=https://ivado.ca/ target=_blank rel="noopener noreferrer">IVADO</a>.<br>Contact Timothée Poisot by <a href=mailto:timothee.poisot@umontreal.ca>email</a> (or don't).</section></footer></body></html>
