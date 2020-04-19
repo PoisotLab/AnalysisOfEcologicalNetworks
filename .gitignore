@@ -1,9 +1,5 @@
-*.jl.cov
-*.jl.*.cov
-*.jl.mem
-deps/deps.jl
-Manifest.toml
-dist/chapters
-dist/notebooks
-dist/.sass-cache
-dist/_site
+_site/
+.sass-cache/*
+vendor/
+Gemfile.lock
+public/
