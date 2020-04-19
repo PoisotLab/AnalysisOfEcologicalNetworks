@@ -1,0 +1,48 @@
+nav#navigation {
+    display: block;
+    width: 100vw;
+    background-color: $muted-color;
+    text-align: center;
+    a {
+        width: 32vw;
+        display: inline-block;
+        text-align: center;
+        line-height: 4em;
+        text-decoration: none;
+        color: $main-color;
+        &:hover {
+            background-color: $muted-color-dark;
+        }
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    nav#navigation {
+        width: 20vw;
+        min-width: 200px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: 0;
+        vertical-align: middle;
+        text-align: center;
+        background-color: transparentize($main-color, 0.1);
+        .navitems {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+        a {
+            width: 100%;
+            text-align: right;
+            color: $muted-color;
+            &:hover {
+                background: none;
+                color: white;
+                font-weight: 600;
+            }
+        }
+    }
+}

@@ -1,14 +1,9 @@
-<nav id="topbar">
-    <a href="">{{ .Site.Params.title | markdownify }}</a>
-    <nav id="menu">
+<nav id="navigation">
+    <div class="navitems">
         {{ $currentPage := . }}
         {{ range .Site.Menus.main }}
         <a class="menu {{if or ($currentPage.IsMenuCurrent "main" .) (eq $currentPage.Section (lower .Name) ) }} active{{end}}"
-            href="{{ .URL }}" {{ if (eq .Name "Software") }}target="_blank" {{ end }}
-            title="{{ .Title }}">{{ .Name }}</a>
+            href="{{ .URL }}" title="{{ .Title }}">{{ .Name }}</a>
         {{ end }}
-    </nav>
-    <a href="javascript:void(0);" class="icon" onclick="toggleMainMenu()">
-        <i class="fa fa-bars"></i>
-    </a>
+    </div>
 </nav>

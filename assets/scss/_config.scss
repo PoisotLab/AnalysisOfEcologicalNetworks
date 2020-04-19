@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,200;0,300;0,400;0,600;0,800;1,200;1,300;1,400;1,600;1,800&display=swap');
+
+* {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 400;
+}
+
+b, strong {
+    font-weight: 600;
+}
+
+em, i {
+    font-weight: inherit;
+}
+
+// Main site color
+$main-color: #282766;
+$main-color-hover: lighten(saturate($main-color, 20), 5);
+
+// Muted color
+$muted-color: #e2e4e5;
+$muted-color-dark: darken($muted-color, 20);
+$muted-color-darker: darken($muted-color-dark, 20);
+
+// Name of the background file
+$background: "/background.jpg";

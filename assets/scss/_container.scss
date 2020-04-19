@@ -1,0 +1,22 @@
+.container {
+    margin: 0 0;
+    background-color: white;
+    position: relative;
+    top: 0;
+    padding: 2em;
+}
+
+header {
+    h1 {
+        font-weight: 800;
+        color: $main-color;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .container {
+        width: 80vw;
+        padding: 3em;
+        min-width: 508px;
+    };
+}

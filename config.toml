@@ -11,27 +11,14 @@ preserveTaxonomyNames = true
 
 [menu]
   [[menu.main]]
-    name = "People"
-    url = "/people/"
+    name = "Chapters"
+    url = "/chapters/"
     weight = 1
   [[menu.main]]
-    name = "Values"
-    url = "/values/"
+    name = "Syllabus"
+    url = "/syllabus/"
     weight = 2
   [[menu.main]]
-    name = "Papers"
-    url = "/papers/"
-    weight = 4
-  [[menu.main]]
-    name = "Research"
-    url = "/research/"
+    name = "About"
+    url = "/about/"
     weight = 3
-  [[menu.main]]
-    name = "Join us!"
-    url = "/opportunities/"
-    weight = 5
-  [[menu.main]]
-    name = "Software"
-    target = "_blank"
-    url = "https://github.com/PoisotLab/"
-    weight = 6
