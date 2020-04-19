@@ -1,0 +1,37 @@
+languageCode = "en-ca"
+preserveTaxonomyNames = true
+
+[params]
+  title = "Practical Analysis of Ecological Networks"
+  subtitle = "BIO3043 / BIO6037"
+  email = "timothee.poisot@umontreal.ca"
+
+[markup.goldmark.renderer]
+  unsafe= true
+
+[menu]
+  [[menu.main]]
+    name = "People"
+    url = "/people/"
+    weight = 1
+  [[menu.main]]
+    name = "Values"
+    url = "/values/"
+    weight = 2
+  [[menu.main]]
+    name = "Papers"
+    url = "/papers/"
+    weight = 4
+  [[menu.main]]
+    name = "Research"
+    url = "/research/"
+    weight = 3
+  [[menu.main]]
+    name = "Join us!"
+    url = "/opportunities/"
+    weight = 5
+  [[menu.main]]
+    name = "Software"
+    target = "_blank"
+    url = "https://github.com/PoisotLab/"
+    weight = 6

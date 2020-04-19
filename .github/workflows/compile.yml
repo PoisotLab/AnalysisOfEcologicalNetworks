@@ -4,25 +4,35 @@ on:
   push:
     branches:
       - master
+  pull_request: *
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1.0.0
+      
       - uses: julia-actions/setup-julia@latest
         with:
-          version: 1.2.0
+          version: 1.4.0
+      
       - name: Install packages
         run: julia --project -e 'import Pkg; Pkg.instantiate()'
-      - name: Prepare output folder for notebooks
-        run: mkdir -p dist/notebooks
-      - name: Prepare output folder for static files
-        run: mkdir -p dist/chapters
+      
       - name: Run Weave
         run: julia --project builder.jl
+      
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.68.3'
+          extended: true
+
+      - name: Build
+        run: hugo --minify
+
       - name: Deploy
-        uses: maxheld83/ghpages@v0.2.1
-        env:
-          BUILD_DIR: "dist/"
-          GH_PAT: ${{ secrets.ACCESS_TOKEN }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
