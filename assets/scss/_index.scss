@@ -8,19 +8,46 @@
 }
 
 main#splash {
-    background: none;
+    background-color: $main-color;
+    text-align: right;
+    h2 {
+        font-weight: 300;
+        font-size: 90%;
+        margin: 0 0;
+    }
+    h1 {
+        font-weight: 600;
+    }
 }
 
 @media only screen and (min-width: 768px) {
     #homepage {
-        nav#navigation, #splash {
+        nav#navigation, main {
+            position: fixed;
             width: 50vw;
             height: 100vh;
             top: 0;
+            .title {
+                display: none;
+            }
         }
-        main {
-            max-width: 500px;
+        main#splash {
+            left: 0;
             height: 100vh;
+            text-align: right;
+            section {
+                color: white;
+                max-width: 500px;
+                padding: 3em;
+                margin: 0 0;
+                position: absolute;
+                top: 50%;
+                -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
+                p {
+                    line-height: 1.8em;
+                }
+            }
         }
     }
 }

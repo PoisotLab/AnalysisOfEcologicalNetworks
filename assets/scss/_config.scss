@@ -14,13 +14,15 @@ em, i {
 }
 
 // Main site color
-$main-color: rgb(155,35,53);
+
+// Ultraviolet 5F4B8B
+// Classic blue 0F4C81
+
+$main-color: #0F4C81;
 $main-color-hover: lighten(saturate($main-color, 20), 5);
+$main-color-muted: lighten(desaturate($main-color, 10), 5);
 
 // Muted color
 $muted-color: #e2e4e5;
 $muted-color-dark: darken($muted-color, 20);
 $muted-color-darker: darken($muted-color-dark, 20);
-
-// Name of the background file
-$background: "/background.jpg";

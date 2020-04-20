@@ -7,15 +7,3 @@
 @import "_container";
 
 @import "_index";
-
-.backdrop {
-    width: 100vw;
-    height: 100vw;
-    background-color: transparentize(darken($main-color, 5), 0.95);
-    background-blend-mode: hue;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -2;
-}
-

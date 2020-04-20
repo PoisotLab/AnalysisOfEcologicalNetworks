@@ -1,4 +1,7 @@
 <nav id="navigation">
+    <a class="title" href="{{ .Site.Params.baseURL }}">
+        {{ .Site.Params.title }}
+    </a>
     <div class="navitems">
         {{ $currentPage := . }}
         {{ range .Site.Menus.main }}

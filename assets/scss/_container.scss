@@ -1,22 +1,30 @@
-.container {
+main#content {
     margin: 0 0;
     background-color: white;
     position: relative;
     top: 0;
-    padding: 2em;
 }
 
 header {
+    padding-top: 8em;
+    background-color: $main-color-muted;
     h1 {
+        color: white;
         font-weight: 800;
-        color: $main-color;
     }
 }
 
-@media only screen and (min-width: 768px) {
-    .container {
-        width: 80vw;
-        padding: 3em;
-        min-width: 508px;
-    };
+.container {
+    max-width: 1000px;
+    margin: 0px auto;
+    padding: 2em;
+    h2 {
+        color: $muted-color-darker;
+    }
+    h3 {
+        color: $muted-color-dark;
+    }
+    p {
+        line-height: 140%;
+    }
 }

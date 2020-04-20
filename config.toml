@@ -7,6 +7,9 @@ preserveTaxonomyNames = true
   subtitle = "BIO3043 / BIO6037"
   email = "timothee.poisot@umontreal.ca"
 
+[permalinks]
+  chapters = "/:section/:title/"
+
 [markup.goldmark.renderer]
   unsafe= true
 
