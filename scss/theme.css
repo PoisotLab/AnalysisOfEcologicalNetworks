@@ -41,7 +41,7 @@ nav#navigation {
     text-align: center;
     line-height: 4em;
     text-decoration: none;
-    color: #282766; }
+    color: #9b2335; }
     nav#navigation a:hover {
       background-color: #acb2b5; }
 
@@ -55,7 +55,7 @@ nav#navigation {
     right: 0;
     vertical-align: middle;
     text-align: center;
-    background-color: rgba(40, 39, 102, 0.9); }
+    background-color: rgba(155, 35, 53, 0.9); }
     nav#navigation .navitems {
       margin: 0;
       position: absolute;
@@ -80,7 +80,7 @@ nav#navigation {
 
 header h1 {
   font-weight: 800;
-  color: #282766; }
+  color: #9b2335; }
 
 @media only screen and (min-width: 768px) {
   .container {
@@ -97,40 +97,19 @@ header h1 {
 main#splash {
   background: none; }
 
-#splash {
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1000; }
-  #splash section {
-    display: block;
-    position: fixed;
-    left: 50%;
-    bottom: 0;
-    transform: translate(-50%, 0);
-    margin: 0 auto;
-    background-color: #282766;
-    color: white;
-    width: 100vw;
-    text-align: center;
-    padding: 3.5em;
-    font-size: 1.1rem; }
-    #splash section div {
-      margin: 0px auto;
-      display: block;
-      text-align: left;
-      max-width: 750px; }
-    #splash section h1 {
-      font-weight: 300;
-      font-size: 1.8rem;
-      text-transform: uppercase; }
+@media only screen and (min-width: 768px) {
+  #homepage nav#navigation, #homepage #splash {
+    width: 50vw;
+    height: 100vh;
+    top: 0; }
+  #homepage main {
+    max-width: 500px;
+    height: 100vh; } }
 
 .backdrop {
   width: 100vw;
   height: 100vw;
-  background-color: rgba(33, 32, 84, 0.05);
+  background-color: rgba(134, 30, 46, 0.05);
   background-blend-mode: hue;
   position: fixed;
   top: 0;

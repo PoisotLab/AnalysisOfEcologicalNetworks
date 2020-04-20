@@ -14,7 +14,14 @@ allowing us to get network data from the <a href=http://mangal.io>mangal.io</a> 
 Note that we will not load it with <code>using</code>, but with <code>import</code> - this means that
 we will need to preface the name of the functions by <code>Mangal.</code>, to avoid having
 a lot of functions with non-specific names in our namespace:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia><span style=color:#66d9ef>import</span> Mangal
-</code></pre></div><p>Finally, because we will want to make some visualisations, we will load the
+</code></pre></div><pre><code>Downloading artifact: MbedTLS
+pilerSupportLibraries
+[?25l[1A[2K[?25hDownloading artifact: OpenBLAS
+[?25l[1A[2K[?25hDownloading artifact: Arpack
+[?25l[1A[2K[?25hDownloading artifact: OpenSpecFun
+ath
+[?25l[1A[2K[?25h
+</code></pre><p>Finally, because we will want to make some visualisations, we will load the
 packages for plots:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia><span style=color:#66d9ef>using</span> Plots
 </code></pre></div><p>All of these packages have documentations, and it is always a good idea to see
 the different options available for the various functions. One way to get a
@@ -202,94 +209,94 @@ network motifs, and network modularity.</p><h3 id=counting-species-and-interacti
 </code></pre></div><pre><code>1139.0
 </code></pre><h3 id=getting-the-degree-of-species>Getting the degree of species</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>degree(B)
 </code></pre></div><pre><code>Dict{Mangal.MangalNode,Int64} with 22 entries:
-  MangalNode(6680, &quot;Chamomilla suaveolens&quot;, 2019-02-25T16:29:23, 2019-02-2…
+  MangalNode(6687, &quot;Colias crocea&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
  =&gt; 3
+  MangalNode(6683, &quot;Reseda luteola&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29…
+ =&gt; 2
+  MangalNode(6675, &quot;Crithmum maritimum&quot;, 2019-02-25T16:29:22, 2019-02-25T1…
+ =&gt; 4
+  MangalNode(6674, &quot;Azorina vidalii&quot;, 2019-02-25T16:29:22, 2019-02-25T16:2…
+ =&gt; 8
+  MangalNode(6677, &quot;Beta vulgaris&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
+ =&gt; 1
   MangalNode(6692, &quot;Lucilia sericata&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
  =&gt; 2
+  MangalNode(6684, &quot;Halictus sp.&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:2…
+ =&gt; 6
+  MangalNode(6681, &quot;Lotus corniculatus&quot;, 2019-02-25T16:29:23, 2019-02-25T1…
+ =&gt; 3
+  MangalNode(6680, &quot;Chamomilla suaveolens&quot;, 2019-02-25T16:29:23, 2019-02-2…
+ =&gt; 3
   MangalNode(6686, &quot;Bombus ruderatus&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
+ =&gt; 3
+  MangalNode(6678, &quot;Daucus carota&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
  =&gt; 3
   MangalNode(6679, &quot;Silene vulgaris&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
  =&gt; 2
-  MangalNode(6676, &quot;Solidago sempervivens&quot;, 2019-02-25T16:29:22, 2019-02-2…
- =&gt; 2
-  MangalNode(6690, &quot;Lasius niger&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:2…
+  MangalNode(6695, &quot;Anothomyia pluvialis&quot;, 2019-02-25T16:29:23, 2019-02-25…
  =&gt; 1
   MangalNode(6689, &quot;Apis mellifera&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29…
  =&gt; 3
-  MangalNode(6682, &quot;Freesia refracta&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
- =&gt; 2
-  MangalNode(6695, &quot;Anothomyia pluvialis&quot;, 2019-02-25T16:29:23, 2019-02-25…
- =&gt; 1
-  MangalNode(6693, &quot;Eristalix tenax&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
+  MangalNode(6694, &quot;Agrotis ipsilon&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
  =&gt; 1
   MangalNode(6691, &quot;Calliphora vemitoria&quot;, 2019-02-25T16:29:23, 2019-02-25…
  =&gt; 1
-  MangalNode(6683, &quot;Reseda luteola&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29…
+  MangalNode(6682, &quot;Freesia refracta&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
  =&gt; 2
-  MangalNode(6688, &quot;Musca domestica&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
- =&gt; 4
-  MangalNode(6687, &quot;Colias crocea&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
- =&gt; 3
-  MangalNode(6677, &quot;Beta vulgaris&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
+  MangalNode(6676, &quot;Solidago sempervivens&quot;, 2019-02-25T16:29:22, 2019-02-2…
+ =&gt; 2
+  MangalNode(6693, &quot;Eristalix tenax&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
  =&gt; 1
-  MangalNode(6681, &quot;Lotus corniculatus&quot;, 2019-02-25T16:29:23, 2019-02-25T1…
- =&gt; 3
-  MangalNode(6684, &quot;Halictus sp.&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:2…
- =&gt; 6
-  MangalNode(6675, &quot;Crithmum maritimum&quot;, 2019-02-25T16:29:22, 2019-02-25T1…
- =&gt; 4
-  MangalNode(6678, &quot;Daucus carota&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
- =&gt; 3
   ⋮                                                                        
  =&gt; ⋮
 </code></pre><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>degree(B; dims<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
 </code></pre></div><pre><code>Dict{Mangal.MangalNode,Int64} with 12 entries:
+  MangalNode(6687, &quot;Colias crocea&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
+ =&gt; 3
   MangalNode(6692, &quot;Lucilia sericata&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
  =&gt; 2
+  MangalNode(6684, &quot;Halictus sp.&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:2…
+ =&gt; 6
   MangalNode(6686, &quot;Bombus ruderatus&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
- =&gt; 3
-  MangalNode(6690, &quot;Lasius niger&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:2…
- =&gt; 1
-  MangalNode(6689, &quot;Apis mellifera&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29…
  =&gt; 3
   MangalNode(6695, &quot;Anothomyia pluvialis&quot;, 2019-02-25T16:29:23, 2019-02-25…
  =&gt; 1
-  MangalNode(6693, &quot;Eristalix tenax&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
+  MangalNode(6689, &quot;Apis mellifera&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29…
+ =&gt; 3
+  MangalNode(6694, &quot;Agrotis ipsilon&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
  =&gt; 1
   MangalNode(6691, &quot;Calliphora vemitoria&quot;, 2019-02-25T16:29:23, 2019-02-25…
  =&gt; 1
+  MangalNode(6693, &quot;Eristalix tenax&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
+ =&gt; 1
+  MangalNode(6690, &quot;Lasius niger&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:2…
+ =&gt; 1
   MangalNode(6688, &quot;Musca domestica&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
  =&gt; 4
-  MangalNode(6687, &quot;Colias crocea&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
- =&gt; 3
-  MangalNode(6684, &quot;Halictus sp.&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:2…
- =&gt; 6
-  MangalNode(6694, &quot;Agrotis ipsilon&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
- =&gt; 1
   MangalNode(6685, &quot;Sepsis thoracica&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
  =&gt; 4
 </code></pre><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>degree(B; dims<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>)
 </code></pre></div><pre><code>Dict{Mangal.MangalNode,Int64} with 10 entries:
   MangalNode(6683, &quot;Reseda luteola&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29…
  =&gt; 2
-  MangalNode(6680, &quot;Chamomilla suaveolens&quot;, 2019-02-25T16:29:23, 2019-02-2…
+  MangalNode(6675, &quot;Crithmum maritimum&quot;, 2019-02-25T16:29:22, 2019-02-25T1…
+ =&gt; 4
+  MangalNode(6674, &quot;Azorina vidalii&quot;, 2019-02-25T16:29:22, 2019-02-25T16:2…
+ =&gt; 8
+  MangalNode(6678, &quot;Daucus carota&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
  =&gt; 3
+  MangalNode(6677, &quot;Beta vulgaris&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
+ =&gt; 1
   MangalNode(6679, &quot;Silene vulgaris&quot;, 2019-02-25T16:29:23, 2019-02-25T16:2…
  =&gt; 2
   MangalNode(6682, &quot;Freesia refracta&quot;, 2019-02-25T16:29:23, 2019-02-25T16:…
  =&gt; 2
-  MangalNode(6677, &quot;Beta vulgaris&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
- =&gt; 1
   MangalNode(6681, &quot;Lotus corniculatus&quot;, 2019-02-25T16:29:23, 2019-02-25T1…
- =&gt; 3
-  MangalNode(6675, &quot;Crithmum maritimum&quot;, 2019-02-25T16:29:22, 2019-02-25T1…
- =&gt; 4
-  MangalNode(6678, &quot;Daucus carota&quot;, 2019-02-25T16:29:23, 2019-02-25T16:29:…
  =&gt; 3
   MangalNode(6676, &quot;Solidago sempervivens&quot;, 2019-02-25T16:29:22, 2019-02-2…
  =&gt; 2
-  MangalNode(6674, &quot;Azorina vidalii&quot;, 2019-02-25T16:29:22, 2019-02-25T16:2…
- =&gt; 8
+  MangalNode(6680, &quot;Chamomilla suaveolens&quot;, 2019-02-25T16:29:23, 2019-02-2…
+ =&gt; 3
 </code></pre><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-julia data-lang=julia>plot(sort(collect(values(degree(B; dims<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)))))
 plot!(sort(collect(values(degree(B; dims<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>)))))
 </code></pre></div><p><img src=figures/01_counting_things_30_1.png alt></p><h3 id=degree-distribution>Degree distribution</h3></section></main><footer><section class=container>We are located in the <a href=https://goo.gl/maps/qtGaMPy9g8jXZz9AA target=_blank>Campus MIL</a> of <a href=http://umontreal.ca target=_blank rel="noopener noreferrer">Université de Montréal</a>.<br>We are mainly funded by <a href=https://www.nserc-crsng.gc.ca/index_eng.asp target=_blank>NSERC</a>, <a href=http://www.frqnt.gouv.qc.ca/accueil target=_blank rel="noopener noreferrer">FRQNT</a>, <a href=https://www.innovation.ca/fr target=_blank rel="noopener noreferrer">CFI</a>, <a href=https://ivado.ca/ target=_blank rel="noopener noreferrer">IVADO</a>.<br>Contact Timothée Poisot by <a href=mailto:timothee.poisot@umontreal.ca>email</a> (or don't).</section></footer></body></html>
