@@ -9,7 +9,20 @@
 
 main#splash {
     background-color: $main-color;
-    text-align: right;
+    //text-align: right;
+    width: 100%;
+    section {
+        max-width: 500px;
+        padding: 3em;
+        margin: 0 0;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+    width: 100vw;
+    height: 100vh;
+    color: white;
     h2 {
         font-weight: 300;
         font-size: 90%;
@@ -29,6 +42,34 @@ main#splash {
             top: 0;
             .title {
                 display: none;
+            }
+        }
+        nav#navigation {
+            right: 0;
+            background-color: $main-color-muted;
+            .navitems {
+                a{
+                    color: $muted-color;
+                    width: 100%;
+                    display: block;
+                    &:hover {
+                        background: none;
+                        color: white;
+                        font-weight: bold;
+                    }
+                }
+                color: white;
+                width: 100%;
+                max-width: 500px;
+                padding: 3em;
+                margin: 0 0;
+                position: absolute;
+                top: 50%;
+                -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
+                p {
+                    line-height: 1.8em;
+                }
             }
         }
         main#splash {
