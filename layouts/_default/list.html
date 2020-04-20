@@ -1,11 +1,17 @@
 {{ define "main" }}
 <main id="content">
     <section class="container">
-        {{ .Content }}        
-        {{ range .Pages }}
-        <li>
-            <a href="{{.Permalink}}">{{.Date.Format "2006-01-02"}} | {{.Title}}</a>
-        </li>
+        {{ .Content }}    
+        {{ if (eq .Section "chapters") }}
+            <div class="contents"></div>    
+            {{ range .Pages }}
+            <div class="chapter">
+                <a class="title" href="{{.Permalink}}">{{.Title}}</a>
+                <p class="summary">
+                    {{ .Summary }}
+                </p>
+            </div>
+            {{ end }}
         {{ end }}
     </section>
 </main>
