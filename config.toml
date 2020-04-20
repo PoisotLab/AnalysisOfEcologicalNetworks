@@ -2,6 +2,8 @@ baseURL = "https://poisotlab.github.io/AnalysisOfEcologicalNetworks/"
 languageCode = "en-ca"
 preserveTaxonomyNames = true
 
+PygmentsCodeFences = false
+
 [params]
   title = "Practical Analysis of Ecological Networks"
   subtitle = "BIO3043 / BIO6037"
