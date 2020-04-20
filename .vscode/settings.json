@@ -1,0 +1,17 @@
+{
+    "grammarly.overrides": [
+        {
+            "files": [
+                "**/chapters/01_counting_things.Jmd"
+            ],
+            "config": {
+                "audience": "knowledgeable",
+                "dialect": "american",
+                "domain": "business",
+                "emotions": [],
+                "goals": [],
+                "emotion": "mild"
+            }
+        }
+    ]
+}

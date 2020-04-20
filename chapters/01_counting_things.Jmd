@@ -8,7 +8,7 @@ weight: 1
 ### Goals of this chapter
 
 The goal of this chapter is to highlight the importance of thinking about the
-number of interactions in a networks, and about the number of interactions
+number of interactions in a network, and about the number of interactions
 established by as species within a network. We will use various examples to
 introduce the notions of connectance, degree, and linkage density. In addition,
 this chapter will serve as an introduction to `EcologicalNetworks` and `Mangal`,
@@ -16,11 +16,11 @@ which will provide valuable information for the other chapters.
 
 ## Link-species relationships
 
-We will begin this chapter by looking a basic information we can get on a single
-network - this is useful both as an exploration of the concepts, and as an
-introduction to the ways we can manipulate network data through programming. In
-particular, this section will serve as a short introduction to the `Mangal`
-package to download ecological networks dataset.
+We will begin this chapter by looking the most basic piece of information we can
+get on a single network - this is useful both as an exploration of the concepts,
+and as an introduction to the ways we can manipulate network data through
+programming. In particular, this section will serve as a short introduction to
+the `Mangal` package to download ecological networks dataset.
 
 We will load the `Mangal` package, to get access to a variety of functions
 allowing us to get network data from the [mangal.io](http://mangal.io) website.
@@ -185,8 +185,7 @@ In the previous section, we focused on the relationship between the number of
 species and the number of interactions *across* networks. It is also very
 informative to look at the distribution of interactions *across* species
 *within* networks - we call the number of interactions that a species has its
-"degree", and the degree distribution is a very important information about a
-network.
+"degree", and the degree distribution is crucial information about a network.
 
 To look at the degree and degree distribution, we will need a few packages,
 which you have installed during the introduction. Specifically, we will want to
