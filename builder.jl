@@ -14,6 +14,6 @@ filter!(p -> endswith(p, ".Jmd"), chapters_content)
 
 for chapter in chapters_content
     root_name = first(split(last(split(chapter, "/")), ".Jmd"))
-    weave(chapter, out_path=joinpath("content", chapters_), doctype="hugo")
+    weave(chapter, out_path=joinpath("content", chapters_), doctype="hugo", fig_path=joinpath("..", "..", "static", "figures", root_name))
     #convert_doc(chapter, joinpath("content", "notebooks", root_name*".ipynb"))
 end

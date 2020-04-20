@@ -3,3 +3,5 @@ _site/
 vendor/
 Gemfile.lock
 public/
+content/chapters/
+!content/chapters/_index.md

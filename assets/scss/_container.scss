@@ -15,16 +15,19 @@ header {
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 800px;
     margin: 0px auto;
     padding: 2em;
     h2 {
-        color: $muted-color-darker;
+        color: $main-color;
     }
     h3 {
-        color: $muted-color-dark;
+        color: $main-color-muted;
     }
     p {
-        line-height: 140%;
+        color: #222;
+        padding: 1em 0em;
+        font-size: 110%;
+        line-height: 150%;
     }
 }
