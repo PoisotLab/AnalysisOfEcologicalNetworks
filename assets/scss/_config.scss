@@ -14,7 +14,7 @@ em, i {
 }
 
 // Main site color
-$main-color: #282766;
+$main-color: rgb(155,35,53);
 $main-color-hover: lighten(saturate($main-color, 20), 5);
 
 // Muted color
