@@ -1,9 +1,284 @@
 <!doctype html><html lang=en><head><title>Ecological Networks - List of chapters</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="BIO3043 / BIO6037"><base href=https://poisotlab.github.io/AnalysisOfEcologicalNetworks/><script src=https://kit.fontawesome.com/1a39b803e2.js crossorigin=anonymous></script><link rel=stylesheet type=text/css href=https://poisotlab.github.io/AnalysisOfEcologicalNetworks/scss/theme.css><script src=/ui/main.js></script><link rel=canonical href=https://poisotlab.github.io/AnalysisOfEcologicalNetworks/chapters/></head><body><div class=backdrop></div><nav id=navigation><a class=title href>Practical Analysis of Ecological Networks</a><div class=navitems><a class="menu active" href=/AnalysisOfEcologicalNetworks/chapters/>Chapters</a>
 <a class=menu href=/AnalysisOfEcologicalNetworks/syllabus/>Syllabus</a>
-<a class=menu href=/AnalysisOfEcologicalNetworks/about/>About</a></div></nav><header><section class=container><h1>List of chapters</h1></section></header><main id=content><section class=container><p><strong>Put short blurb about chapters here</strong></p><div class=contents></div><div class=chapter><a class=title href=https://poisotlab.github.io/AnalysisOfEcologicalNetworks/chapters/counting-species-and-interactions/>Counting species and interactions</a><p class=summary><p>How many things are in a network? The goal of this chapter is to highlight the
+<a class=menu href=/AnalysisOfEcologicalNetworks/about/>About</a></div></nav><header><section class=container><h1>List of chapters</h1></section></header><main id=content><section class=container><p><strong>Put short blurb about chapters here</strong></p><div class=contents></div><div class=chapter><a class=title href=https://poisotlab.github.io/AnalysisOfEcologicalNetworks/chapters/></a><p class=summary><p>How many things are in a network? The goal of this chapter is to highlight the
 importance of thinking about the number of interactions in a network, and about
 the number of interactions established by a species within a network. We will
 use various examples to introduce the notions of connectance, degree, and
 linkage density. This chapter will also (mostly!) serve as an introduction to
 <code>EcologicalNetworks</code> and <code>Mangal</code>, which will provide valuable information for
-the other chapters.</p></p></div><div class=chapter><a class=title href=https://poisotlab.github.io/AnalysisOfEcologicalNetworks/chapters/comparing-networks/>Comparing networks</a><p class=summary>Comparing ecological networks Goals of this chapter</p></div><div class=chapter><a class=title href=https://poisotlab.github.io/AnalysisOfEcologicalNetworks/chapters/network-motifs/>Network motifs</a><p class=summary>Network motifs Goals of this chapter Illustration</p></div></section></main><footer><section class=container>Coming soon</section></footer></body></html>
+the other chapters.</p></p></div><div class=chapter><a class=title href=https://poisotlab.github.io/AnalysisOfEcologicalNetworks/chapters/></a><p class=summary>Comparing ecological networks Goals of this chapter</p></div><div class=chapter><a class=title href=https://poisotlab.github.io/AnalysisOfEcologicalNetworks/chapters/></a><p class=summary>Network motifs Goals of this chapter Illustration</p></div></section></main><footer><section class=container>Coming soon</section></footer></body></html>code> package to download ecological networks.</p><p>We will load the <code>Mangal</code> package, to get access to a variety of functions
+allowing us to get network data from the <a href=http://mangal.io>mangal.io</a> website.
+Note that we will not load it with <code>using</code>, but with <code>import</code> - this means that
+we will need to preface the name of the functions by <code>Mangal.</code>, to avoid having
+a lot of functions with non-specific names in our namespace:</p><pre><code class=language-julia>import Mangal
+</code></pre><pre><code>Downloading artifact: MbedTLS
+pilerSupportLibraries
+[?25l[1A[2K[?25hDownloading artifact: OpenBLAS
+[?25l[1A[2K[?25hDownloading artifact: Arpack
+[?25l[1A[2K[?25hDownloading artifact: OpenSpecFun
+ath
+[?25l[1A[2K[?25h
+</code></pre><pre class=julia-error>
+ERROR: Failed to precompile Mangal &#91;b8b640a6-63d9-51e6-b784-5033db27bef2&#93; to /home/runner/.julia/compiled/v1.4/Mangal/IM50K_3clB8.ji.
+</pre><p>Finally, because we will want to make some visualisations, we will load the
+packages for plots:</p><pre><code class=language-julia>using Plots
+</code></pre><pre><code>Downloading artifact: FriBidi
+[?25l[1A[2K[?25hDownloading artifact: libass
+[?25l[1A[2K[?25hDownloading artifact: libfdk_aac
+[?25l[1A[2K[?25hDownloading artifact: LAME
+[?25l[1A[2K[?25hDownloading artifact: libvorbis
+[?25l[1A[2K[?25hDownloading artifact: x264
+[?25l[1A[2K[?25hDownloading artifact: x265
+[?25l[1A[2K[?25hDownloading artifact: FFMPEG
+[?25l[1A[2K[?25h
+</code></pre><p>All of these packages have documentations, and it is always a good idea to see
+the different options available for the various functions. One way to get a
+sense of the functions included in a package, or to get help on these functions,
+it to type <code>?[PackageName].</code> in the Julia REPL, and to press Tab to see the
+possible functions. This is also a great way to discover functionalities in
+packages.</p><h3 id=overview-of-the-data-querying>Overview of the data querying</h3><p>And with this, we are all set to get our first network from the &lt;mangal.io>
+database. To illustrate the basic notions, we will work on a pollination
+network, which we access by its unique identifier (<code>935</code>). We will see in later
+sections how we can get more control over what networks we get.</p><pre><code class=language-julia>first_network = Mangal.network(935)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: Mangal not defined
+</pre><pre><code class=language-julia>print(first_network.description)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: first_network not defined
+</pre><p>This object is of the type<pre class=julia-error>
+ERROR: UndefVarError: first_network not defined
+</pre>, and has information about
+a network. To see what information is available in any type, we can call
+<code>fieldnames</code> on the type. In this case, this would return</p><pre><code class=language-julia>fieldnames(typeof(first_network))
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: first_network not defined
+</pre><p>Most of these information are metadata, <em>e.g.</em> the date, spatial position, date
+of upload, and a reference. What we do <em>not</em> have is a list of the interactions.
+Luckily, we do not yet need a list of interactions, since we are only concerned
+with counting them (in due time, we will get the entire information on
+interactions). The <code>Mangal</code> package has a method called <code>count</code>, which will
+return the number of objects matching a series of queries. For example, we can
+get the number of nodes (of type <code>MangalNode</code>) in our network with:</p><pre><code class=language-julia>count(Mangal.MangalNode, first_network)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: Mangal not defined
+</pre><p>We can do the same with the number of interactions:</p><pre><code class=language-julia>count(Mangal.MangalInteraction, first_network)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: Mangal not defined
+</pre><p>This method is preferable to more complex ones requiring to download all
+interactions, because it is a lot faster. As we will see in the following
+section, the representation of network data in &lt;mangal.io> is very rich, and if
+all we care about is counting things, then we do not need the overhead
+associated with retrieving all the data.</p><p>Equipped with the ability to count objects, we can measure the number of species
+and interactions in any network. We will now generalize this process a little
+bit, and explore the relationship that exists between the number of species and
+the number of links in a collection of networks.</p><h3 id=getting-the-data-for-multiple-networks>Getting the data for multiple networks</h3><p>In &lt;mangal.io>, networks are organized in datasets - we will work on a classical
+food web analysis dataset, representing interactions in small lakes in the
+Adirondack:</p><pre><code class=language-julia>small_lakes_dataset = first(Mangal.datasets(&quot;q&quot; =&gt; &quot;Adirondack&quot;))
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: Mangal not defined
+</pre><p>To get the networks associated to this dataset, we can use the <code>networks</code>
+function, which will give us an array of networks objects. But first, we may
+want to know how many networks we will get this way:</p><pre><code class=language-julia>count(Mangal.MangalNetwork, small_lakes_dataset)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: Mangal not defined
+</pre><p>The following line will get all of these networks for us:</p><pre><code class=language-julia>small_lakes_networks = Mangal.networks(small_lakes_dataset)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: Mangal not defined
+</pre><pre><code class=language-julia>println(&quot;small_lakes_networks contains $(length(small_lakes_networks)) networks&quot;)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: small_lakes_networks not defined
+</pre><p>We will therefore be able to use our collection of<pre class=julia-error>
+ERROR: UndefVarError: small_lakes_networks not defined
+</pre>networks to see how the number of species and
+links are related.</p><h3 id=counting-species-and-interactions>Counting species and interactions</h3><p>From our collection of networks (<code>small_lakes_networks</code>), we want to extract the
+number of nodes, and the number of interactions. There are a few ways to do
+this, as is always the case with programming tasks. In this case, we will
+summarize every network by a <code>Tuple</code> which will contain <code>(S, L)</code>, the number of
+species and links. A <code>Tuple</code> is not modifiable, so this is a safe way to collect
+data. In addition, tuples of coordinates are usable directly in plots, and this
+will simplify the syntax immensely.</p><p>The first way to achieve this is to use a &ldquo;list
+comprehension&rdquo;:</p><pre><code class=language-julia>LS_1 = [(count(Mangal.MangalNode, network), count(Mangal.MangalInteraction, network)) for network in small_lakes_networks]
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: small_lakes_networks not defined
+</pre><pre><code class=language-julia>first(LS_1)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: LS_1 not defined
+</pre><p>This is a little bit unwieldy, as this is a long line, and requires to create a
+variable (<code>network</code>) only to use inside the loop. Instead, we might want to use
+the more readable expression below:</p><pre><code class=language-julia>S = count.(Mangal.MangalNode, small_lakes_networks);
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: Mangal not defined
+</pre><pre><code class=language-julia>L = count.(Mangal.MangalInteraction, small_lakes_networks);
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: Mangal not defined
+</pre><pre><code class=language-julia>LS = collect(zip(S,L));
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: S not defined
+</pre><p>This alternative version is easier to parse, and throughout the book we will try
+to favor readability over &ldquo;clever&rdquo; code. The <code>LS</code> variable contains
+tuples that look like:</p><pre><code class=language-julia>first(LS)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: LS not defined
+</pre><p>The first network in our dataset has<pre class=julia-error>
+ERROR: UndefVarError: LS not defined
+</pre>species, and<pre class=julia-error>
+ERROR: UndefVarError: LS not defined
+</pre>interactions.</p><pre><code class=language-julia>p1 = scatter(
+  collect(LS),
+  lab=&quot;&quot;, legend=:topleft,
+  xlabel = &quot;Species&quot;, ylabel = &quot;Links&quot;,
+  frame=:grid,
+  xlim=(10,100),
+  ylim=(10,1000),
+  c=:grey, msw=0, alpha=0.5
+)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: LS not defined
+</pre><h3 id=theories-for-link-species-scaling>Theories for link-species scaling</h3><h2 id=degree-and-degree-distribution>Degree and degree distribution</h2><p>In the previous section, we focused on the relationship between the number of
+species and the number of interactions <em>across</em> networks. It is also very
+informative to look at the distribution of interactions <em>across</em> species
+<em>within</em> networks - we call the number of interactions that a species has its
+&ldquo;degree&rdquo;, and the degree distribution is crucial information about a network.</p><p>To look at the degree and degree distribution, we will need a few packages,
+which you have installed during the introduction. Specifically, we will want to
+load functions to analyse networks themselves, so we will use
+<code>EcologicalNetworks</code>, and we might want to represent the networks, and therefore
+will import <code>EcologicalNetworksPlots</code>:</p><pre><code class=language-julia>using EcologicalNetworks
+import EcologicalNetworksPlots
+</code></pre><h3 id=getting-the-network-data>Getting the network data</h3><p>And with this, we are all set to get our first network (we also briefly
+encountered it during the previous section):</p><pre><code class=language-julia>first_network = Mangal.network(935)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: Mangal not defined
+</pre><pre><code class=language-julia>print(first_network.description)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: first_network not defined
+</pre><p>As opposed to the previous section, we now want to get a list of interactions
+contained in this network:</p><pre><code class=language-julia>first_network_interactions = Mangal.interactions(first_network);
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: Mangal not defined
+</pre><pre><code class=language-julia>print(&quot;There are $(length(first_network_interactions)) interactions in this network&quot;)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: first_network_interactions not defined
+</pre><p>We can have a deeper look at the first interaction:</p><pre><code class=language-julia>first_interaction = first(first_network_interactions)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: first_network_interactions not defined
+</pre><p>This has <em>a lot</em> of information! We can focus on the most important properties:</p><table><thead><tr><th>Information</th><th>How to get it</th><th>Result</th></tr></thead><tbody><tr><td>Interaction type</td><td><code>first_interaction.type</code></td><td><pre class=julia-error></td>
+</tr>
+<tr>
+<td>ERROR: UndefVarError: first_interaction not defined</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></pre></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td>Species 1</td><td><code>first_interaction.from.name</code></td><td><pre class=julia-error></td>
+</tr>
+<tr>
+<td>ERROR: UndefVarError: first_interaction not defined</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></pre></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td>Species 2 taxon ID</td><td><code>first_interaction.to.taxon.id</code></td><td><pre class=julia-error></td>
+</tr>
+<tr>
+<td>ERROR: UndefVarError: first_interaction not defined</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></pre></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td>Method of observation</td><td><code>first_interaction.method</code></td><td><pre class=julia-error></td>
+</tr>
+<tr>
+<td>ERROR: UndefVarError: first_interaction not defined</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></pre></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td>Interaction strength</td><td><code>first_interaction.strength</code></td><td><pre class=julia-error></td>
+</tr>
+<tr>
+<td>ERROR: UndefVarError: first_interaction not defined</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></pre></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table><h3 id=creating-the-network-object>Creating the network object</h3><p>There are a few ways to collect these interactions into a network, but the
+simplest by far is to transform (<code>convert</code>) our <code>MangalNetwork</code> object into a
+<code>UnipartiteQuantitativeNetwork</code> (which is used by <code>EcologicalNetworks</code>) - this
+is done as follows:</p><pre><code class=language-julia>N = convert(UnipartiteQuantitativeNetwork, first_network)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: first_network not defined
+</pre><p>At this point, you are hopefuly familiar with what &ldquo;network&rdquo; means, but may have
+some hesitations about the meaning of &ldquo;unipartite&rdquo; and &ldquo;quantitative&rdquo;. <strong>TK</strong></p><p>As a sidenote, we will often adhere to the following convention when naming
+networks. <code>N</code> is a unipartite network, <code>B</code> is a bipartite network, and <code>R</code> is a
+random network. This is a useful way to get a sense of what we can expect the
+variable to contain.</p><p>Speaking of which, we know that this network contains information on
+pollination, and pollination networks are bipartite, because they have two
+groups of organisms (pollinators and polinized), which we assume do not
+establish interactions within the group. We can therefore transform (<code>convert</code>)
+our network into its bipartite representation:</p><pre><code class=language-julia>B = convert(BipartiteQuantitativeNetwork, N)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: N not defined
+</pre><p>If you are not sure that a network can be represented in a bipartite way, you
+can always use the check for bipartiteness, which will return <code>true</code> if the
+network can be converted.</p><pre><code class=language-julia>EcologicalNetworks.check_bipartiteness(N)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: N not defined
+</pre><p>Not to worry, the <code>convert</code> function will fail with an explanation if the
+network cannot be transformed into a bipartite one.</p><h3 id=visualizing-the-network>Visualizing the network</h3><p>To get a sense of what the network &ldquo;looks like&rdquo;, we may decide to plot it. We
+have imported the <code>EcologicalNetworksPlots</code> package, which comes with a variety
+of layouts and other functionalities for this task, and works in conjunction
+with <code>Plots</code>. In this example, we will use a spring layout, where nodes are
+repelled, and interactions are attracting their nodes.</p><pre><code class=language-julia>I = EcologicalNetworksPlots.initial(EcologicalNetworksPlots.RandomInitialLayout, B)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: B not defined
+</pre><pre><code class=language-julia>for step in 1:4000
+  EcologicalNetworksPlots.position!(EcologicalNetworksPlots.ForceDirectedLayout(2.5), I, B)
+end
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: I not defined
+</pre><pre><code class=language-julia>plot(I, B, aspectratio=1)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: I not defined
+</pre><pre><code class=language-julia>scatter!(I, B, bipartite=true, mc=:lightgrey, msc=:white, msw=2, ms=8)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: I not defined
+</pre><p>We <em>may</em> decide to do this, but in practice we will often refrain from plotting
+networks. Plotting networks is very rarely useful. Depending on the layout, it
+is easy to mis-communicate about the structure of the network. Past a certain
+number of species and interactions, the plots look like hairballs. Most
+importantly, we have a wide variety of quantitative measures that we can apply,
+and they will teach us a lot more about the network structure than any plot ever
+would. Plotting is marginally useful during explorations, and to illustrate
+certain concepts, but should largely be avoided for research purposes. The few
+exceptions to this rule will be during the chapters on network comparison,
+network motifs, and network modularity.</p><h3 id=counting-species-and-interactions-1>Counting species and interactions</h3><pre><code class=language-julia>richness(B)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: B not defined
+</pre><pre><code class=language-julia>richness(B; dims=1)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: B not defined
+</pre><pre><code class=language-julia>richness(B; dims=2)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: B not defined
+</pre><pre><code class=language-julia>links(B)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: B not defined
+</pre><pre><code class=language-julia>sum(B)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: B not defined
+</pre><h3 id=getting-the-degree-of-species>Getting the degree of species</h3><pre><code class=language-julia>degree(B)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: B not defined
+</pre><pre><code class=language-julia>degree(B; dims=1)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: B not defined
+</pre><pre><code class=language-julia>degree(B; dims=2)
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: B not defined
+</pre><pre><code class=language-julia>plot(sort(collect(values(degree(B; dims=1)))))
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: B not defined
+</pre><pre><code class=language-julia>plot!(sort(collect(values(degree(B; dims=2)))))
+</code></pre><pre class=julia-error>
+ERROR: UndefVarError: B not defined
+</pre><h3 id=degree-distribution>Degree distribution</h3></section></main><footer><section class=container>Coming soon</section></footer></body></html>
