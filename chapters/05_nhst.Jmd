@@ -7,7 +7,7 @@ Ecologists, like sadly a great majority of scientists, decide on the worthiness
 of an observation by ignoring their best judgement, decades of training in
 biology, and expertise; instead, we rely on whether some arbitrary value (the
 *p*-value) is lower than some even more arbitrary threshold (0.05). It all seems
-very *ad hoc* (it is). And yet, a surprising amout of literature on ecological
+very *ad hoc* (it is). And yet, a surprising amount of literature on ecological
 networks attempts to decide whether some observed value of a network measure is
 "significant", and so it is with great reluctance that we will dedicate a
 chapter to this practice.
@@ -29,12 +29,12 @@ Given a function $f$ and a network $\mathbf{N}$, NHST requires to measure the
 distribution of possible values of  $f(\mathbf{N})$. For most measures (all of
 them, in fact), there is no direct expression of this distribution, and so we
 need to rely on an imperfect proxy: generating random networks. The exact models
-under which these models are generated is explained in 
+under which these models are generated is explained in section **TK**.
 
 ### Step 2 - from the sample to the distribution
 
 ### Step 3 - determining significance
 
-## Overview of the null models {: .null}
+## Overview of the null models
 
 ## An example using nestedness
