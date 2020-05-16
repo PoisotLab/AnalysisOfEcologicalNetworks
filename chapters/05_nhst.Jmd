@@ -1,0 +1,21 @@
+---
+title: The deeply flawed art of null hypothesis significance testing
+weight: 5
+---
+
+Ecologists, like sadly a great majority of scientists, decide on the worthiness
+of an observation by ignoring their best judgement, decades of training in
+biology, and expertise; instead, we rely on whether some arbitrary value (the
+*p*-value) is lower than some equally arbitrary threshold (0.05). It all seems
+very *ad hoc* (it is). And yet, a surprising amout of literature on ecological
+networks attempts to decide whether some observed value of a network structure
+measure is "significant", and it is with great reluctance that we will dedicate
+a chapter to it.
+
+<!-- more -->
+
+## Fundamentals of NHST
+
+## Overview of the NHST steps
+
+## An example using nestedness
