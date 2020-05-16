@@ -13,6 +13,6 @@ Weave = "44d3d7a6-8a23-5bf8-98c5-b353f8df5ec9"
 
 [compat]
 Mangal = "0.2"
-StatsPlots = "0.14"
 StatsBase = "0.33"
+StatsPlots = "0.14"
 Weave = "0.8"

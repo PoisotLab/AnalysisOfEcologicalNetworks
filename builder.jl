@@ -1,12 +1,13 @@
-import Pkg; Pkg.activate(".")
-
 using Weave
 
 chapters_ = "chapters"
 notebooks_ = "notebooks"
+pdf_ = "pdf"
 
-ispath(joinpath("content", chapters_)) || mkdir(joinpath("content", chapters_))
-ispath(joinpath("content", notebooks_)) || mkdir(joinpath("content", notebooks_))
+ispath("content") || mkdir("content")
+for output in [chapters_, notebooks_, pdf_]
+    ispath(joinpath("content", output)) || mkdir(joinpath("content", output))
+end
 
 chapters_content = joinpath.(chapters_, readdir(chapters_))
 filter!(isfile, chapters_content)
@@ -14,5 +15,6 @@ filter!(p -> endswith(p, ".Jmd"), chapters_content)
 
 for chapter in chapters_content
     root_name = first(split(last(split(chapter, "/")), ".Jmd"))
-    weave(chapter, out_path=joinpath("content", chapters_), doctype="hugo", fig_path=joinpath("..", "static", "figures", root_name))
+    @info "Weaving $(root_name)"
+    weave(chapter, out_path=joinpath("content", chapters_))
 end

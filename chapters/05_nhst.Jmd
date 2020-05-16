@@ -14,7 +14,7 @@ chapter to this practice.
 
 <!-- more -->
 
-## Fundamentals of NHST
+## Fundamentals of network NHST
 
 Null Hypothesis Significance Testing (NHST) for ecological networks strives to
 answer the following question: "if I observed the value $f_0$ for the measure
@@ -23,11 +23,18 @@ chance?". Most often, we want to refine this question by asking if the value is
 larger or smaller than we expect, and this is why this process usually involves
 a one-tailed one-sample *t*-test.
 
-It does so by generating a distribution for the possible values of
-$f(\mathbf{N})$. For most measures (all of them, in fact), there is no direct
-expression of the distribution of the results, and we need to rely on an
-imperfect proxy: generating random networks.
+### Step 1 - generating a sample
 
-## Overview of the NHST steps
+Given a function $f$ and a network $\mathbf{N}$, NHST requires to measure the
+distribution of possible values of  $f(\mathbf{N})$. For most measures (all of
+them, in fact), there is no direct expression of this distribution, and so we
+need to rely on an imperfect proxy: generating random networks. The exact models
+under which these models are generated is explained in 
+
+### Step 2 - from the sample to the distribution
+
+### Step 3 - determining significance
+
+## Overview of the null models {: .null}
 
 ## An example using nestedness

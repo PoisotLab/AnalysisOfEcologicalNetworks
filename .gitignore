@@ -4,8 +4,8 @@ vendor/
 Gemfile.lock
 public/
 
-# Do not keep the built files
-content/chapters/
+# Do not keep the build files
+content/
 !content/chapters/_index.md
 
 # Do not keep the manifest for local building
