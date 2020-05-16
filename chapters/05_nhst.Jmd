@@ -6,15 +6,27 @@ weight: 5
 Ecologists, like sadly a great majority of scientists, decide on the worthiness
 of an observation by ignoring their best judgement, decades of training in
 biology, and expertise; instead, we rely on whether some arbitrary value (the
-*p*-value) is lower than some equally arbitrary threshold (0.05). It all seems
+*p*-value) is lower than some even more arbitrary threshold (0.05). It all seems
 very *ad hoc* (it is). And yet, a surprising amout of literature on ecological
-networks attempts to decide whether some observed value of a network structure
-measure is "significant", and it is with great reluctance that we will dedicate
-a chapter to it.
+networks attempts to decide whether some observed value of a network measure is
+"significant", and so it is with great reluctance that we will dedicate a
+chapter to this practice.
 
 <!-- more -->
 
 ## Fundamentals of NHST
+
+Null Hypothesis Significance Testing (NHST) for ecological networks strives to
+answer the following question: "if I observed the value $f_0$ for the measure
+$f$ on a network $\mathbf{N}$, is it in the range of values expected by
+chance?". Most often, we want to refine this question by asking if the value is
+larger or smaller than we expect, and this is why this process usually involves
+a one-tailed one-sample *t*-test.
+
+It does so by generating a distribution for the possible values of
+$f(\mathbf{N})$. For most measures (all of them, in fact), there is no direct
+expression of the distribution of the results, and we need to rely on an
+imperfect proxy: generating random networks.
 
 ## Overview of the NHST steps
 
