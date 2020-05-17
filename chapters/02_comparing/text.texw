@@ -1,0 +1,12 @@
+\chapter{Comparing ecological networks}
+
+Although this might seem like a more advanced topic, comparing network is
+relatively easy in that it mostly involves enumerating elements -- how many
+species, and how many interactions, are either unique to one, or shared by two
+networks?
+
+\section{Pairwise network comparison}
+
+\section{The metaweb}
+
+\section{Multi-site network comparison}

@@ -5,8 +5,12 @@ Gemfile.lock
 public/
 
 # Do not keep the build files
-content/
-!content/chapters/_index.md
+chapters/**/text.tex
+
+# Do not keep the latex artifacts
+template/*
+!template/book.tex
+!template/book.pdf
 
 # Do not keep the manifest for local building
 Manifest.toml
