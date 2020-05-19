@@ -1,16 +1,29 @@
 \documentclass[11pt,twoside]{book}
 
+\title{Practical Analysis of Ecological Networks}
+\author{Timoth\'ee Poisot}
+\date{\today}
+
+\usepackage[backend=bibtex,style=authoryear]{biblatex}
+\bibliography{../references}
+
 \begin{document}
+
+  \maketitle
 
   \frontmatter
 
   \tableofcontents
 
-  \mainmatter
-
   \input{../liminal/introduction.tex}
+
+  \mainmatter
 
   % Chapters
   \input{../template/chapters.tex}
+
+  \backmatter
+
+  \printbibliography
 
 \end{document}

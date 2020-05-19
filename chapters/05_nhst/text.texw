@@ -1,4 +1,4 @@
-\chapter[Significance testing]{The deeply flawed art of null hypothesis significance testing}
+\chapter[Significance testing]{The deeply flawed art of null hypothesis significance testing\label{chap:nhst}}
 
 Ecologists, like sadly a great majority of scientists, decide on the worthiness
 of an observation by ignoring their best judgement, decades of training in
