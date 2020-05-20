@@ -1,6 +1,12 @@
 \chapter{Introduction\label{chap:introduction}}
 
-\parencite{DelmBess18}
+When we first attempted to synthetize the literature on \emph{how to best
+analyse ecological networks?} \parencite{DelBesBri18}, two things became clear.
+First, an increasing number of fields in ecology were using networks as a
+formalism to represent and analyse their data. Second, methods were multiplying
+at an alarming rate, and there was a great degree of methodological confusion
+about what to use, how to interpret it, and when not to use it. In short, the
+field of ecological network analysis was long due for a textbook.
 
 \section{Why networks?}
 
@@ -19,8 +25,27 @@
 \subsection{The foundation of network theory}
 
 There are a number of fantastic textbooks on network science, where the
-mathematics foundations of this field are laid out in a clear and comprehensive
-way.
+mathematical foundations of this field are laid out in a clear and comprehensive
+way. One of the best ways to share the excitement about why the mathematics of
+networks theory are worth looking into is to read a short, and very accessible,
+perspective by \textcite{Str01}. Should this whet your appetite, there are
+multiple resources that are suitable to get a deeper education in graph theory.
+Two outstanding references are the now classic \textcite{New10}, and the more
+recent \textcite{Bar16}. For readers seeking more introductory material, we
+recommed the short and very accessible volume by \textcite{Cha85}, as well as
+\textcite{Wes01}.
+
+But fear not -- this book is not about mathematics. The measures of ecological
+network structure we will discuss have are grounded in mathematics, but the
+point is \emph{not} to go into much details into it. There will be a \emph{fair}
+amount of mathematics, probably as much as during an advanced class in
+statistics (which is to say just enough to fill the average ecologist with
+apprehension, but not quite with dread), but it will not be the point of the
+material. This is merely something that comes with the analysis of ecological
+networks. You will realize through the different chapters that there is only a
+very small quantity of graph theory we need to know to do good ecology; this
+will have the highly desirable side effect to keep any mathematical posturing to
+a minimum.
 
 \subsection{Programming}
 
@@ -39,3 +64,23 @@ running it exactly as presented here, is a terrible idea. Instead, we encourage
 readers to \emph{adapt} the code to their own interests, uses, and questions.
 
 How does one adapts code? \textbf{tk}
+
+\subsection{The importance of consistent notation}
+
+Throughout this book, we strive to use notation that remains as constant as
+possible. Networks are represented by capital letters, with the exact letter
+used representing some additional information about the type of network.
+Unipartite networks are $U$, bipartite networks are $B$, probabilistic networks
+are $P$, random networks are $R$, quantitative networks are $G$ (only because
+$Q$ is used for modularity already), and a network of an unspecified type is
+$N$. When there is a collection of multiple networks, we use the same letter in
+bold face -- for example, we can note that a function generates random networks
+from a bipartite network using $f(B) = \mathbf{R}$.
+
+To refer to a specific interaction, we will use the notation $N_{ij}$, which
+represents an interaction \emph{from} species $i$ \emph{to} species $j$. In some
+situations, we will also use $N(i,j)$ to represent the same information. The
+notation $N_{i\cdot}$ and $N_{\cdot j}$ indicate, respectively, the set of
+species with which $i$ interacts, and the set of species that interact with $j$.
+For example, the number of predators of species 4 in a unipartite food web is
+$\|U_{\cdot 4}\|$.

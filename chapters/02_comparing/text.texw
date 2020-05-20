@@ -9,7 +9,7 @@ networks? As such, a good understanding of the core concepts in
 To develop an intuition of why ecological networks differ, it is useful to think
 of them as sets. Not only does it allows defining a number of mathematical
 operations that will greatly simplify the notation, it also matches directly the
-formalism developped by \textcite{KoleGast03} for the dissimilarity of
+formalism developped by \textcite{KolGasLen03} for the dissimilarity of
 presence-absence data, which we will follow throughout this chapter.
 
 \section{Pairwise network comparison}

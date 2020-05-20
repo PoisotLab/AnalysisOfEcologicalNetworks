@@ -11,6 +11,10 @@ chapters/**/text.tex
 template/*
 !template/book.tex
 !template/book.pdf
+*.aux
+*_latexmk
+*.fls
+*.log
 
 # Do not keep the manifest for local building
 Manifest.toml
