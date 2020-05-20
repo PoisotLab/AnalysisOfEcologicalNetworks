@@ -82,9 +82,8 @@ f0 = nodf(B)
 Recall that NODF takes values between 0 and 1, where 1 indicates perfect
 nestedness -- this network has therefore a rather high nestedness, and it makes
 sense to ask whether this value is larger than expected by chance. Our
-definition of \emph{chance} here will be represented by two null models: either
-the nestedness is larger than expected given the value of connectance, or the
-nestedness is larger than expected given the degree distribution of the network.
+definition of \emph{chance} here will be represented a null models: is the
+nestedness is larger than expected given the degree distribution of the network?
 
 \subsection{Generating the null sample}
 
@@ -156,21 +155,24 @@ Visualized in \ref{fig:nhst-example1}
     \begin{tikzpicture}
     \begin{axis}[
       ybar interval,
-      ymin = 0,
+      ymin = 0, ymax = 1,
       xmin = 0, xmax = 1,
       xtick=,% reset from ybar interval
     ]
-    \addplot+[hist={data=y,bins=25,data min=0,data max=1,cumulative,density}] table[row sep=\\,y index=0] {
+    \addplot+[hist={data=y,bins=50,data min=0,data max=1,cumulative,density}] table[row sep=\\,y index=0] {
     data\\
 ! print(reduce(*, string.(f).*"\\\\"))
     };
+    \draw[dashed] (`j f0`,0) -- (`j f0`,1);
     \end{axis}
     \end{tikzpicture}
-    \caption{Distribution of the values of nestedness on the simulated networks based on TK}
+    \caption{Cumulative distribution of the values of nestedness on the simulated networks based on TK. The value $f_0$ of the original network is marked as a vertical bar. From this plot, it appears that the empirical value is far outside the bounds of the distribution for the Type II null model.}
     \label{fig:nhst-example1}
 \end{figure}
 
 \subsection{Measuring significance}
+
+With these elements, we have ...
 
 <<>>=
 sum(f .>= f0)/length(f)
