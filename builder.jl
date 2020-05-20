@@ -1,4 +1,5 @@
 using Weave
+using Latexify
 
 chapters_ = "chapters"
 
@@ -13,10 +14,17 @@ for chapter_folder in chapters_folders
     chapter_files = joinpath.(chapter_folder, readdir(chapter_folder))
     filter!(f -> endswith(f, "text.texw"), chapter_files)
     if length(chapter_files) == 1
-        @info "Weaving $(chapter_folder)"
         chapter_text = first(chapter_files)
-        weave(chapter_text)
-        push!(all_files, replace(chapter_text, ".texw"=>".tex"))
+        target = replace(chapter_text, ".texw"=>".tex")
+        target_absent = !isfile(target)
+        target_older = target_absent ? true : mtime(chapter_text) > mtime(target)
+        if target_absent | target_older
+            @info "Weaving $(chapter_folder)"
+            weave(chapter_text; doctype="texminted")
+        else
+            @info "Skipping $(chapter_folder)"
+        end
+        push!(all_files, target)
     end
 end
 

@@ -2,56 +2,10 @@
 
 \usepackage[b5paper]{geometry}
 
+\usepackage[cache=false]{minted}
+
 \usepackage{pgfplots}
-
-\makeatletter
-\def\thickhrulefill{\leavevmode \leaders \hrule height 1pt\hfill \kern \z@}
-\def\maketitle{%
-  \null
-  \thispagestyle{empty}%
-  \vskip 1cm
-  \begin{center}
-    \begin{tabular}{r}
-      {\huge \strut \@title}\\ \\ \\
-      {\normalfont\LARGE\@author}
-    \end{tabular}
-  \end{center}
-  \vfil
-  \null
-  \cleardoublepage
-  }
-\makeatother
-
-\makeatletter
-\def\thickhrulefill{\leavevmode \leaders \hrule height 1ex \hfill \kern \z@}
-\def\@makechapterhead#1{%
-  \vspace*{10\p@}%
-  {\parindent \z@
-    {\raggedleft \reset@font
-      \fontsize{15ex}{15ex}\selectfont %Problème avec les substitutions...
-      \bfseries\thechapter\par\nobreak}%
-    \par\nobreak
-    \interlinepenalty\@M
-    {\raggedright \Huge \bfseries #1}%
-    \par\nobreak
-    \hrulefill
-    \par\nobreak
-    \vskip 100\p@
-  }}
-\def\@makeschapterhead#1{%
-  \vspace*{10\p@}%
-  {\parindent \z@
-    {\raggedleft \reset@font
-      \fontsize{15ex}{15ex}\selectfont %Problème avec les substitutions...
-      \bfseries\vphantom{\thechapter}\par\nobreak}%
-    \par\nobreak
-    \interlinepenalty\@M
-    {\raggedright \Huge \bfseries #1}%
-    \par\nobreak
-    \hrulefill
-    \par\nobreak
-    \vskip 100\p@
-  }}
+\pgfplotsset{compat=1.17}
 
 \title{Practical Analysis of Ecological Networks}
 \author{Timoth\'ee Poisot}
@@ -68,7 +22,6 @@
 
   \tableofcontents
 
-
   \mainmatter
 
   \input{../liminal/introduction.tex}
@@ -77,7 +30,7 @@
   \input{../template/chapters.tex}
 
   \printbibliography
-  
+
   \appendix
 
 \end{document}

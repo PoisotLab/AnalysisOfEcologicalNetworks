@@ -1,5 +1,10 @@
 \chapter[Significance testing]{The deeply flawed art of null hypothesis significance testing\label{chap:nhst}}
 
+<<>>=
+using EcologicalNetworks
+import Mangal
+@
+
 Ecologists, like sadly a great majority of scientists, decide on the worthiness
 of an observation by ignoring their best judgement, decades of training in
 biology, and expertise; instead, we rely on whether some arbitrary value (the
@@ -32,6 +37,63 @@ under which these models are generated is explained in section \textbf{TK}.
 
 \section{Overview of the null models}
 
+\subsection{Probabilistic models}
+
+\subsection{Generalization of the probabilistic models}
+
+\begin{equation}\label{eq:linearfilter}
+  P_{ij} = \alpha_1 N_{ij} + \alpha_2 \frac{N_{\cdot j}}{S_1} + \alpha_3 \frac{N_{i\cdot}}{S_2} + \alpha_4 \frac{L}{S_1S_2}
+\end{equation}
+
+\begin{equation}\label{eq:lfnm1}
+P = lf(N, \mathbf{\alpha} = (0, 0, 0, 1))
+\end{equation}
+
+\subsection{Permutational models}
+
 \section{An example using nestedness}
+
+In this section, we will use the NHST process outline in figure~\ref{fig:nhst}
+to determine whether bipartite networks are \emph{more} nested than expected by
+chance, under two assumptions as to what drives the structure of the model
+
+\ref{eq:lfnm1}
+
+\subsection{NHST on a single network}
+
+We will first work on a dataset of pollination interactions between insects and
+oil-flowers, collected by \textcite{BezMacMel09}.
+
+<<>>=
+oilflower_network = Mangal.network(929)
+N = convert(UnipartiteNetwork, oilflower_network)
+B = convert(BipartiteNetwork, N)
+@
+
+We will use NODF (\textbf{tk}) to measure the nestedness of this network. This
+is an important step, as it will provide our $f_0$, the reference value,
+measured on the empirical network:
+
+<<>>=
+f0 = nodf(B)
+@
+
+Recall that NODF takes values between 0 and 1, where 1 indicates perfect
+nestedness -- this network has therefore a rather high nestedness, and it makes
+sense to ask whether this value is larger than expected by chance. Our
+definition of \emph{chance} here will be represented by two null models: either
+the nestedness is larger than expected given the value of connectance, or the
+nestedness is larger than expected given the degree distribution of the network.
+
+<<>>=
+P = null2(B)
+R = rand(P, 5000)
+@
+
+<<>>=
+f = nodf.(R)
+@
+
+\subsection{Searching for generalities}
 
 \section{Overview of the issues}
