@@ -3,6 +3,7 @@
 <<>>=
 using EcologicalNetworks
 import Mangal
+using Statistics
 @
 
 Ecologists, like sadly a great majority of scientists, decide on the worthiness
@@ -51,7 +52,7 @@ P = lf(N, \mathbf{\alpha} = (0, 0, 0, 1))
 
 \subsection{Permutational models}
 
-\section{An example using nestedness}
+\section{Application -- nestedness of oil-flowers pollination networks}
 
 In this section, we will use the NHST process outline in figure~\ref{fig:nhst}
 to determine whether bipartite networks are \emph{more} nested than expected by
@@ -59,7 +60,7 @@ chance, under two assumptions as to what drives the structure of the model
 
 \ref{eq:lfnm1}
 
-\subsection{NHST on a single network}
+\subsection{Preparing the data and measuring nestedness}
 
 We will first work on a dataset of pollination interactions between insects and
 oil-flowers, collected by \textcite{BezMacMel09}.
@@ -85,15 +86,93 @@ definition of \emph{chance} here will be represented by two null models: either
 the nestedness is larger than expected given the value of connectance, or the
 nestedness is larger than expected given the degree distribution of the network.
 
+\subsection{Generating the null sample}
+
 <<>>=
 P = null2(B)
-R = rand(P, 5000)
+R = rand(P, 20000)
 @
 
 <<>>=
 f = nodf.(R)
 @
 
-\subsection{Searching for generalities}
+We can start looking at the average value of the nestedness of the random networks:
+
+<<>>=
+mean(f)
+@
+
+Well, that didn't work.
+
+\subsection{Fixing the null sample}
+
+This is probably because the NODF measure is failing on some networks, and
+returning a value of \texttt{NaN}. Let's see which networks are to blame:
+
+<<>>=
+X = R[findall(isnan.(f))]
+@
+
+We can look for all sorts of reasons to understand why the NODF measure is
+failing. The answer is as follows: as you will recall from section
+\ref{sec:XXXX}, NODF involves dividing the number of overlapping interactions by
+the XXX number of interactions. So if one species has no interactions, we would
+end up dividing by 0, which would result in \texttt{NaN}. How could a species
+have no interaction? The null model we use is in fact a probabilistic network,
+and we know from \textcite{probanet} that there is a chance (which can be very
+small), that a species will end up having no interactions if we perform
+independent random draws.
+
+This provides an interesting hypothesis: that the networks for which we do not
+have a NODF score have "degenerate" matrices, after the \textcite{twosides}
+nomenclature.
+
+<<>>=
+all(isdegenerate.(X))
+@
+
+This can be solved in two ways. We can either decide to remove these networks,
+or we can decide to remove the species that are not connected. In section
+\ref{sec:degenerate}, we will discuss the consequences of this choice, but for
+now, we will remove thes networks:
+
+<<>>=
+filter!(!isdegenerate, R)
+@
+
+We can now update the distribution of values:
+
+<<>>=
+f = nodf.(R)
+@
+
+\subsection{Measuring significance}
+
+<<>>=
+sum(f .>= f0)/length(f)
+@
+
+Visualized
+
+\begin{tikzpicture}
+\begin{axis}[
+  ybar interval,
+  xtick=,% reset from ybar interval
+]
+\addplot+[hist={data=y}] table[row sep=\\,y index=0] {
+data\\
+! print(reduce(*, string.(f).*"\\\\"))
+};
+\end{axis}
+\end{tikzpicture}
+
+\section{Application -- looking for generalities}
 
 \section{Overview of the issues}
+
+\subsection{Degenerate matrices}
+
+\subsection{Strongly constrained matrices}
+
+\subsection{Representativity of the sample}
