@@ -149,21 +149,27 @@ We can now update the distribution of values:
 f = nodf.(R)
 @
 
-Visualized
+Visualized in \ref{fig:nhst-example1}
 
-\begin{tikzpicture}
-\begin{axis}[
-  ybar interval,
-  ymin = 0,
-  xmin = 0, xmax = 1,
-  xtick=,% reset from ybar interval
-]
-\addplot+[hist={data=y}] table[row sep=\\,y index=0] {
-data\\
-! print(reduce(*, string.(f).*"\\\\"))
-};
-\end{axis}
-\end{tikzpicture}
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+    \begin{axis}[
+      ybar interval,
+      ymin = 0,
+      xmin = 0, xmax = 1,
+      xtick=,% reset from ybar interval
+    ]
+    \addplot+[hist={data=y, density}] table[row sep=\\,y index=0] {
+    data\\
+    ! print(reduce(*, string.(f).*"\\\\"))
+    };
+    \end{axis}
+    \end{tikzpicture}
+    \caption{Distribution of the values of nestedness on the simulated networks based on TK}
+    \label{fig:nhst-example1}
+\end{figure}
+
 
 \subsection{Measuring significance}
 
