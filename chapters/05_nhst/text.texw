@@ -88,12 +88,14 @@ nestedness is larger than expected given the degree distribution of the network.
 
 \subsection{Generating the null sample}
 
-<<>>=
+<<results="hidden">>=
 P = null2(B)
-R = rand(P, 20000)
+R = rand(P, 5000)
 @
 
-<<>>=
+TK
+
+<<results="hidden">>=
 f = nodf.(R)
 @
 
@@ -110,7 +112,7 @@ Well, that didn't work.
 This is probably because the NODF measure is failing on some networks, and
 returning a value of \texttt{NaN}. Let's see which networks are to blame:
 
-<<>>=
+<<results="hidden">>=
 X = R[findall(isnan.(f))]
 @
 
@@ -137,20 +139,14 @@ or we can decide to remove the species that are not connected. In section
 \ref{sec:degenerate}, we will discuss the consequences of this choice, but for
 now, we will remove thes networks:
 
-<<>>=
+<<results="hidden">>=
 filter!(!isdegenerate, R)
 @
 
 We can now update the distribution of values:
 
-<<>>=
+<<results="hidden">>=
 f = nodf.(R)
-@
-
-\subsection{Measuring significance}
-
-<<>>=
-sum(f .>= f0)/length(f)
 @
 
 Visualized
@@ -158,6 +154,8 @@ Visualized
 \begin{tikzpicture}
 \begin{axis}[
   ybar interval,
+  ymin = 0,
+  xmin = 0, xmax = 1,
   xtick=,% reset from ybar interval
 ]
 \addplot+[hist={data=y}] table[row sep=\\,y index=0] {
@@ -166,6 +164,12 @@ data\\
 };
 \end{axis}
 \end{tikzpicture}
+
+\subsection{Measuring significance}
+
+<<>>=
+sum(f .>= f0)/length(f)
+@
 
 \section{Application -- looking for generalities}
 
