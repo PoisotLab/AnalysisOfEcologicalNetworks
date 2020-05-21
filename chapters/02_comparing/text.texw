@@ -1,18 +1,57 @@
 \chapter{Comparing ecological networks\label{chap:comparing}}
 
-Although this might seem like a more advanced topic, comparing network is
+Although this might seem like a more advanced topic, comparing networks is
 relatively easy in that it mostly involves enumerating elements -- how many
 species, and how many interactions, are either unique to one, or shared by two
 networks? As such, a good understanding of the core concepts in
-\ref{chap:counting} will be useful for this chapter.
+\ref{chap:counting} will be useful for this chapter. In the following sections,
+we will define a $\beta$-diversity for networks, as well as a
+$\gamma$-diversity, and see how we can derive ecological intuitions from the
+relationships between various components of dissimilarity. This framework was
+originally laid out in \textcite{PoiCanMou12}, and has been revisited several
+times since (\textbf{TK refs}).
 
 To develop an intuition of why ecological networks differ, it is useful to think
 of them as sets. Not only does it allows defining a number of mathematical
 operations that will greatly simplify the notation, it also matches directly the
 formalism developped by \textcite{KolGasLen03} for the dissimilarity of
-presence-absence data, which we will follow throughout this chapter.
+presence-absence data, which we will follow throughout this chapter. One
+significant result from \textcite{KolGasLen03} is that almost any measure of
+pairwise $\beta$-diversity can be expressed as an operation with three inputs:
+how many things are unique (to either objects being compared), and how many
+things are shared.
 
 \section{Pairwise network comparison}
+
+\subsection{Networks as sets}
+
+To facilitate the measurement of network dissimilarity, we will need to define
+three operations on networks: unions, intersections, and set differences. To
+illustrate them, let us first define a pair of networks, which each up to four
+species, but have some variation in both species composition and species
+interactions. We will call these networks $X$ and $Y$, and define them as a list
+of species pairs forming their interactions: $X = \{(a,b), (b,c)\}$, $Y =
+\{(a,c), (b,c) (d,c)\}$. Network $X$ has species $\{a,b,c\}$, and network $Y$
+has species $\{a,b,c,d\}$.
+
+The union of these two networks, $X \cup Y$, is the network containing all
+interactions and species of both $X$ and $Y$, so that
+
+$$X \cup Y = \{(a,b), (b,c), (a,c), (d,c)\} \,.$$
+
+The intersect between these networks, $X \cap Y$, is the network containing the
+species and interactions that are common to both $X$ and $Y$, which in our case
+is
+
+$$X \cap Y = \{(b,c)\}\.$$
+
+Finally, we will define the difference, $X \setminus Y$, as the interactions and
+species that are unique to $X$, leading in our example to $X \setminus Y =
+\{(a,b)\}$, and $Y \setminus X = \{(a,c),(d,c)\}$.
+
+\subsection{Partitions of network dissimilarity}
+
+\subsection{Relationships between components}
 
 \section{The metaweb}
 
@@ -20,7 +59,7 @@ In the previous section, we have focused on the fact that different networks can
 share, or not, some of their species, and some of their interactions. This
 provided a powerful intuition to think about network dissimilarity in terms of
 $\alpha$ and $\beta$ diversity - but what about $\gamma$? In this section, we
-will think about the "metaweb", defined by \textcite{Dunn06} as the aggregation
+will think about the "metaweb", defined by \textcite{Dun06} as the aggregation
 of all regional interactions in a series of related networks. In other words, we
 can define a metaweb as the recursive union of a collection of networks.
 
@@ -29,3 +68,5 @@ can define a metaweb as the recursive union of a collection of networks.
 \subsection{Network distance to the metaweb}
 
 \section{Multi-site network comparison}
+
+\section{Quantitative network dissimilarity}
