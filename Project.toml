@@ -11,7 +11,7 @@ StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 Weave = "44d3d7a6-8a23-5bf8-98c5-b353f8df5ec9"
 
 [compat]
-CSV = "0.6"
+CSV = "0.6, 0.7"
 EcologicalNetworks = "0.3"
 GeoInterface = "0.5"
 Mangal = "0.2"
